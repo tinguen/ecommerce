@@ -1,0 +1,34 @@
+/* purgecss start ignore */
+@tailwind  base;
+@tailwind  components;
+/* purgecss end ignore */
+
+@tailwind utilities;
+
+.card {
+    @apply flex-auto p-6 bg-white rounded-lg shadow-2xl m-4;
+}
+
+.header-text {
+    @apply italic text-white m-2;
+}
+
+.card-heading {
+    @apply text-xl font-bold;
+}
+
+.page {
+    @apply flex flex-col min-h-screen bg-blue-100;
+}
+
+.markdown p, ul, br, a, em, strong, blockquote, del, hr, table, thead, tbody, tr, td, th, ol, li, h1, h2, h3, h4, h5, h6, code, pre, html {
+    word-break: break-all;
+}
+
+.button {
+  @apply border-solid border-4 border-white bg-black rounded-lg px-4 py-2 m-2 box-border text-white
+}
+
+.input-view {
+  @apply flex-grow m-2 p-2 bg-gray-200 border-solid border-2 border-gray-300 rounded-lg;
+}
