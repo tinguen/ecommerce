@@ -21,11 +21,11 @@ const CreateView = () => {
           price
         }
         const file = document.getElementById('input-files').files
-        let id
+        let data
         if (file.length) {
           const formData = new FormData()
           formData.append('file', file[0])
-          id = await axios({
+          data = await axios({
             method: 'post',
             url: `${baseUrl}/api/v1/images/upload`,
             data: formData,
@@ -44,11 +44,13 @@ const CreateView = () => {
             })
         }
 
-        if (id) obj.imageId = id
+        if (data.data.id) obj.imageId = data.data.id
+        console.log(obj)
         await axios.post(`${baseUrl}/api/v1/products/create`, obj)
         setErr(false)
         history.push('/')
       } catch (er) {
+        console.log(er.data)
         setErr(true)
       }
     }

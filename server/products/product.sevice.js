@@ -7,6 +7,8 @@
 
 // const jwt = require('jsonwebtoken')
 // const bcrypt = require('bcryptjs')
+import mongoose from 'mongoose'
+
 const db = require('../_helpers/db')
 
 const { Product } = db
@@ -26,6 +28,7 @@ async function create(productParam) {
   }
 
   const product = new Product(productParam)
+  if (productParam.imageId) product.imageId = mongoose.Types.ObjectId(productParam.imageId)
 
   // save user
   await product.save()
