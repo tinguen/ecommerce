@@ -13,7 +13,7 @@ const Product = (props) => {
     <div className="card flex flex-wrap justify-between">
       <div className="flex flex-wrap">
         <img
-          alt="Upload"
+          alt="Product img"
           src={product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : ''}
           style={{
             display: 'block'

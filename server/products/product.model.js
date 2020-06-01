@@ -9,7 +9,7 @@ const schema = new Schema({
   currency: { type: String, required: true },
   imageId: {
     type: mongoose.Types.ObjectId,
-    // default: mongoose.Types.ObjectId('5ed525528033af10fcc9ce5b')
+    default: mongoose.Types.ObjectId('5ed52e425f737718e7ab66db')
   },
   createdDate: { type: Date, default: Date.now },
   price: { type: Number, required: true }

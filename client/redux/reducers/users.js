@@ -66,6 +66,7 @@ export function getCurrentUser() {
     return axios
       .get(`${baseUrl}/api/v1/users/current`, { headers: { Authorization: AuthStr } })
       .then(({ data }) => dispatch({ type: SET_USERNAME, user: data }))
+      .catch(() => localStorage.removeItem('token'))
   }
 }
 

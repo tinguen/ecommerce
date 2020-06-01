@@ -36,6 +36,7 @@ const uploadFile = async (req, res, next) => {
 function getFile(req, res, next) {
   gfs
     .openDownloadStream(mongoose.Types.ObjectId(req.params.id))
+    .on('error', (err) => next(err))
     .pipe(res)
     .on('error', (err) => next(err))
 }

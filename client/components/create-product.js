@@ -9,7 +9,6 @@ const CreateView = () => {
   const [price, setPrice] = useState()
   const firstUpdate = useRef(true)
   const [err, setErr] = useState(false)
-  const [imageId, setImageId] = useState()
   const baseUrl = window.location.origin
   function handleSubmit(e) {
     e.preventDefault()
@@ -21,7 +20,31 @@ const CreateView = () => {
           currency,
           price
         }
-        if (imageId) obj.imageId = imageId
+        const file = document.getElementById('input-files').files
+        let id
+        if (file.length) {
+          const formData = new FormData()
+          formData.append('file', file[0])
+          id = await axios({
+            method: 'post',
+            url: `${baseUrl}/api/v1/images/upload`,
+            data: formData,
+            headers: { 'Content-Type': 'multipart/form-data' }
+          })
+            // .then(({ data }) => {
+            //   console.log(data.id)
+            //   // setImageId(data.id)
+            //   document
+            //     .getElementById('img')
+            //     .setAttribute('src', `${baseUrl}/api/v1/images/${data.id}`)
+            //   return data.id
+            // })
+            .catch((response) => {
+              console.log(response)
+            })
+        }
+
+        if (id) obj.imageId = id
         await axios.post(`${baseUrl}/api/v1/products/create`, obj)
         setErr(false)
         history.push('/')
@@ -33,32 +56,31 @@ const CreateView = () => {
   }
 
   function onUpload(e) {
-    // const reader = new FileReader()
-
-    // reader.onload = function (e) {
-    //   $('#blah').attr('src', e.target.result).width(150).height(200)
-    // }
-
-    // reader.readAsDataURL(input.files[0])
     e.preventDefault()
-    const file = document.getElementById('input-files').files
-    const formData = new FormData()
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      document.getElementById('img').setAttribute('src', ev.target.result)
+    }
 
-    formData.append('file', file[0])
-    axios({
-      method: 'post',
-      url: `${baseUrl}/api/v1/images/upload`,
-      data: formData,
-      headers: { 'Content-Type': 'multipart/form-data' }
-    })
-      .then(({ data }) => {
-        console.log(data.id)
-        setImageId(data.id)
-        document.getElementById('img').setAttribute('src', `${baseUrl}/api/v1/images/${data.id}`)
-      })
-      .catch((response) => {
-        console.log(response)
-      })
+    const file = document.getElementById('input-files').files
+    reader.readAsDataURL(file[0])
+    // const formData = new FormData()
+
+    // formData.append('file', file[0])
+    // axios({
+    //   method: 'post',
+    //   url: `${baseUrl}/api/v1/images/upload`,
+    //   data: formData,
+    //   headers: { 'Content-Type': 'multipart/form-data' }
+    // })
+    //   .then(({ data }) => {
+    //     console.log(data.id)
+    //     setImageId(data.id)
+    //     document.getElementById('img').setAttribute('src', `${baseUrl}/api/v1/images/${data.id}`)
+    //   })
+    //   .catch((response) => {
+    //     console.log(response)
+    //   })
   }
 
   useEffect(() => {
@@ -115,9 +137,6 @@ const CreateView = () => {
         />
         <br />
 
-        <button type="submit" id="search-button" className="button">
-          Add product
-        </button>
         <div className="form-group">
           <input type="file" name="file" id="input-files" className="form-control-file border" />
         </div>
@@ -131,6 +150,9 @@ const CreateView = () => {
             display: 'block'
           }}
         />
+        <button type="submit" id="search-button" className="button">
+          Add product
+        </button>
       </form>
       <div className="text-red-800">{err ? 'Product title is taken' : ''}</div>
     </div>
