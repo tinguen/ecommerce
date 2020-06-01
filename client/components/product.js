@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { addToCart, removeFromCart } from '../redux/reducers/users'
 
 const Product = (props) => {
   const { product, cartCounter = 0 } = props
   const [counter, setCounter] = useState(cartCounter)
   const dispatch = useDispatch()
-  const isLogged = useSelector((s) => s.user.isLogged)
+  // const isLogged = useSelector((s) => s.user.isLogged)
   const baseUrl = window.location.origin
 
   return (
@@ -28,7 +28,8 @@ const Product = (props) => {
           </div>
         </div>
       </div>
-      <div className={`${!isLogged ? 'absolute opacity-0 -z-10' : ''}`}>
+      {/* <div className={`${!isLogged ? 'absolute opacity-0 -z-10' : ''}`}> */}
+      <div>
         <button
           type="submit"
           className={`button ${!counter ? 'absolute opacity-0 -z-10' : ''}`}

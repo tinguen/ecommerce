@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import { history } from '../redux'
 
@@ -7,7 +7,7 @@ const RegisterView = () => {
   const [lastname, setLastname] = useState('')
   const [firstname, setFirstname] = useState('')
   const [password, setPassword] = useState('')
-  const firstUpdate = useRef(true)
+  // const firstUpdate = useRef(true)
   const [err, setErr] = useState(false)
   function handleSubmit(e) {
     e.preventDefault()
@@ -29,13 +29,13 @@ const RegisterView = () => {
     createUser()
   }
 
-  useEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false
-      return
-    }
-    if (!err) history.push('/login')
-  }, [err])
+  // useEffect(() => {
+  //   if (firstUpdate.current) {
+  //     firstUpdate.current = false
+  //     return
+  //   }
+  //   if (!err) history.push('/login')
+  // }, [err])
 
   return (
     <div className="card">

@@ -37,7 +37,7 @@ export function addToCart(productId) {
   return (dispatch, getState) => {
     const store = getState()
     if (!store.user.user.cart) {
-      history.push('/login')
+      history.push('/login', { direction: 'GO_BACK' })
       return store.user
     }
     return dispatch({ type: ADD_TO_CART, id: productId })
@@ -48,7 +48,10 @@ export function removeFromCart(productId) {
   return (dispatch, getState) => {
     const store = getState()
     if (!store.user.user.cart) {
-      history.push('/login', { direction: 'GO_BACK' })
+      history.push({
+        pathname: '/login',
+        state: { direction: 'GO_BACK' }
+      })
       return store.user
     }
     return dispatch({ type: REMOVE_FROM_CART, id: productId })

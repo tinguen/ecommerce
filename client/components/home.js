@@ -21,11 +21,22 @@ const Home = () => {
       <Head title="Home" />
       <Header />
       <Switch>
-        <Route exact path="/" component={() => <ProductView />} />
-        <Route exact path="/signup" component={() => <RegisterView />} />
-        <Route exact path="/login" component={() => <LoginView />} />
-        <Route exact path="/create" component={() => <CreateView />} />
-        <Route exact path="/cart" component={() => <CartView />} />
+        {/* <Route exact path="/" component={() => <ProductView />} /> */}
+        <Route exact path="/">
+          <ProductView />
+        </Route>
+        <Route exact path="/signup">
+          <RegisterView />
+        </Route>
+        <Route exact path="/login">
+          <LoginView />
+        </Route>
+        <Route exact path="/create">
+          <CreateView />
+        </Route>
+        <Route exact path="/cart">
+          <CartView />
+        </Route>
       </Switch>
     </div>
   )
