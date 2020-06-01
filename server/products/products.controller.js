@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 const express = require('express')
+const productService = require('./product.sevice')
 
 const router = express.Router()
-const productService = require('./product.sevice')
 
 function createProduct(req, res, next) {
   productService
