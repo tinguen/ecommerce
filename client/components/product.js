@@ -5,7 +5,8 @@ import { addToCart, removeFromCart, setCounterCart } from '../redux/reducers/use
 const Product = (props) => {
   const { product } = props
   const dispatch = useDispatch()
-  const counter = useSelector((s) => s.user.cart[product.id])
+  const prdt = useSelector((s) => s.user.user.cart.filter((p) => p.productId === product.id))
+  const counter = prdt.length ? prdt[0].counter : 0
   const [innerCounter, setInnerCounter] = useState(counter || 0)
   const baseUrl = window.location.origin
 
@@ -36,7 +37,7 @@ const Product = (props) => {
         <button
           type="submit"
           // className={`button ${!counter ? 'absolute opacity-0 -z-10' : ''}`}
-          className=""
+          className="m-2"
           onClick={() => {
             dispatch(removeFromCart(product.id))
           }}
@@ -44,22 +45,15 @@ const Product = (props) => {
           -
         </button>
         <input
-          className="rounded-lg p-2 mt-2 mb-2 border-solid border-2 border-gray-300 w-8 h-8 outline-none flex-auto"
+          className="rounded-lg p-2 mt-2 mb-2 border-solid border-2 border-gray-300 w-8 h-8 outline-none flex-auto text-xs text-center"
           name="counter"
-          placeholder=""
+          maxLength="2"
           value={innerCounter}
           onChange={(e) => setInnerCounter(e.target.value)}
           onBlur={(e) => {
-            // setInnerCounter(e.target.value)
             const diff = parseInt(e.target.value, 10) - (counter || 0)
-            console.log(diff, typeof diff === 'number')
             // eslint-disable-next-line no-self-compare
-            if (!(typeof diff === 'number' && diff === diff) || diff === 0) return
-            // if (diff > 0) {
-            //   new Array(diff).fill(0).forEach(() => dispatch(addToCart(product.id)))
-            // } else if (diff < 0) {
-            //   new Array(Math.abs(diff)).fill(0).forEach(() => dispatch(removeFromCart(product.id)))
-            // }
+            if (!(typeof diff === 'number' && diff === diff)) return
             dispatch(setCounterCart(product.id, e.target.value))
           }}
         />

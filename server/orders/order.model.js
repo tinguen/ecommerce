@@ -9,23 +9,19 @@ const cartSchema = new Schema({
 })
 
 const schema = new Schema({
-  username: { type: String, unique: true, required: true },
-  password: { type: String },
-  hash: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
+  address: { type: String, required: true },
   createdDate: { type: Date, default: Date.now },
-  imageId: { type: mongoose.Types.ObjectId },
+  userId: { type: mongoose.Types.ObjectId, required: true },
   cart: [cartSchema]
 })
 
-schema.set('toJSON', {
+cartSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform(doc, ret) {
     delete ret._id
-    delete ret.hash
-    delete ret.password
   }
 })
 
@@ -38,4 +34,4 @@ cartSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('User', schema)
+module.exports = mongoose.model('Order', schema)

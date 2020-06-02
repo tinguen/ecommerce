@@ -15,7 +15,7 @@ const Header = (props) => {
   const [middleLink, setMiddleLink] = useState(middle)
   const [leftLink, setLeftLink] = useState(left)
   const isLogged = useSelector((s) => s.user.isLogged)
-  const user = useSelector((s) => s.user.user)
+  // const user = useSelector((s) => s.user.user)
   const dispatch = useDispatch()
   // function newHandleKeyPress(event) {
   //   handleKeyPress(event)
@@ -24,14 +24,14 @@ const Header = (props) => {
   //   }
   // }
   useEffect(() => {
-    if (!user.cart) {
+    if (!isLogged) {
       setMiddleLink({ path: '/signup', title: 'Sign up' })
       setLeftLink({ path: '/login', title: 'Login' })
     } else {
       setMiddleLink(middle)
       setLeftLink(left)
     }
-  }, [user.cart])
+  }, [isLogged])
 
   return (
     <header className="sm:flex bg-gray-900 p-6 mb-2 shadow-2xl">
@@ -58,7 +58,21 @@ const Header = (props) => {
             {leftLink.title}
           </button>
         </div>
-        <div className="header-text">
+        {!isLogged ? (
+          <div className="header-text">
+            <button
+              type="button"
+              onClick={() => {
+                history.push(middleLink.path)
+              }}
+            >
+              {middleLink.title}
+            </button>
+          </div>
+        ) : (
+          ''
+        )}
+        {/* <div className="header-text">
           <button
             type="button"
             onClick={() => {
@@ -66,6 +80,16 @@ const Header = (props) => {
             }}
           >
             {middleLink.title}
+          </button>
+        </div> */}
+        <div className="header-text">
+          <button
+            type="button"
+            onClick={() => {
+              history.push('/cart')
+            }}
+          >
+            Cart
           </button>
         </div>
         {isLogged ? (

@@ -73,13 +73,13 @@ async function update(id, userParam) {
   Object.assign(user, userParam)
   // if (userParam.cart) user.push(userParam.cart)
   // user.cart.push('a')
-  if (userParam.cart) {
-    if (Array.isArray(userParam.cart)) {
-      user.pushAll(userParam.cart)
-    } else {
-      user.push(userParam.cart)
-    }
-  }
+  // if (userParam.cart) {
+  //   if (Array.isArray(userParam.cart)) {
+  //     user.pushAll(userParam.cart)
+  //   } else {
+  //     user.push(userParam.cart)
+  //   }
+  // }
 
   await user.save()
 }

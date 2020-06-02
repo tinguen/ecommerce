@@ -1,12 +1,13 @@
 import axios from 'axios'
 import { history } from '../index'
 
-const initialState = { user: {}, isLogged: false, cart: {}, total: 0 }
+const initialState = { user: { cart: [] }, isLogged: false, cart: {}, total: 0 }
 const SET_USERNAME = 'SET_USERNAME'
 const LOGOUT = 'LOGOUT'
 const SET_COUNTER_CART = 'SET_COUNTER_CART'
 const ADD_TO_CART = 'ADD_TO_CART'
 const REMOVE_FROM_CART = 'REMOVE_FROM_CART'
+const CLEAR_CART = 'CLEAR_CART'
 const FETCH_STATE = 'FETCH_STATE'
 const SET_TOTAL = 'SET_TOTAL'
 export default (state = initialState, action) => {
@@ -15,39 +16,44 @@ export default (state = initialState, action) => {
       return { ...state, isLogged: true, user: action.user }
     }
     case LOGOUT: {
-      return { ...state, user: {}, isLogged: false }
+      return { ...state, user: { cart: [] }, isLogged: false }
     }
     case SET_COUNTER_CART: {
-      const cart = { ...state.cart }
-      cart[action.id] = action.counter
-      const diff = action.counter - (state.cart[action.id] || 0)
-      if (diff > 0)
-        return {
-          ...state,
-          user: { ...state.user, cart: [...state.user.cart, ...new Array(diff).fill(action.id)] },
-          cart
-        }
-      const c = state.user.cart.filter((id) => id !== action.id)
-      return {
-        ...state,
-        user: { ...state.user, cart: [...c, ...new Array(action.counter).fill(action.id)] },
-        cart
-      }
+      let cart = [...state.user.cart]
+      const index = cart.map((pr) => pr.productId).indexOf(action.id)
+      if (index === -1 && action.counter === 0) return state
+      if (index === -1) cart = [...cart, { productId: action.id, counter: action.counter }]
+      if (action.counter > 0) cart[index] = { productId: action.id, counter: action.counter }
+      if (action.counter === 0)
+        cart = [...cart.slice(0, index, ...cart.slice(index + 1, cart.length))]
+      return { ...state, user: { ...state.user, cart } }
     }
     case ADD_TO_CART: {
-      const cart = { ...state.cart }
-      if (cart[action.id]) cart[action.id] += 1
-      else cart[action.id] = 1
-      return { ...state, user: { ...state.user, cart: [...state.user.cart, action.id] }, cart }
+      let cart = [...state.user.cart]
+      const index = cart.map((pr) => pr.productId).indexOf(action.id)
+      if (index === -1) cart = [...cart, { productId: action.id, counter: 1 }]
+      else {
+        cart[index] = { ...cart[index], counter: cart[index].counter + 1 }
+      }
+      return { ...state, user: { ...state.user, cart } }
     }
     case REMOVE_FROM_CART: {
-      const { cart: userCart } = state.user
-      const index = userCart.indexOf(action.id)
-      if (!(index > -1)) return state
-      const cart = { ...state.cart }
-      cart[action.id] -= 1
-      const newCart = [...userCart.slice(0, index), ...userCart.slice(index + 1, userCart.length)]
-      return { ...state, user: { ...state.user, cart: newCart }, cart }
+      const cart = [...state.user.cart]
+      const index = cart.map((pr) => pr.productId).indexOf(action.id)
+      if (index === -1) return state
+      if (cart[index].counter === 1)
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            cart: [...cart.slice(0, index, ...cart.slice(index + 1, cart.length))]
+          }
+        }
+      cart[index] = { ...cart[index], counter: cart[index].counter - 1 }
+      return { ...state, user: { ...state.user, cart } }
+    }
+    case CLEAR_CART: {
+      return { ...state, user: { ...state.user, cart: [] } }
     }
     case FETCH_STATE: {
       return { ...state }
@@ -73,40 +79,27 @@ export function setCounterCart(productId, newCounter) {
     }
     const counter = store.user.cart[productId]
     const diff = parseInt(newCounter, 10) - (counter || 0)
-    if (!(typeof diff === 'number') || diff === 0) return counter
+    if (!(typeof diff === 'number')) return counter
     return dispatch({ type: SET_COUNTER_CART, id: productId, counter: parseInt(newCounter, 10) })
   }
 }
 
 export function addToCart(productId) {
-  return (dispatch, getState) => {
-    const store = getState()
-    if (!store.user.user.cart) {
-      history.push('/login', { direction: 'GO_BACK' })
-      return store.user
-    }
-    return dispatch({ type: ADD_TO_CART, id: productId })
-  }
+  return { type: ADD_TO_CART, id: productId }
 }
 
 export function removeFromCart(productId) {
-  return (dispatch, getState) => {
-    const store = getState()
-    if (!store.user.user.cart) {
-      history.push({
-        pathname: '/login',
-        state: { direction: 'GO_BACK' }
-      })
-      return store.user
-    }
-    return dispatch({ type: REMOVE_FROM_CART, id: productId })
-  }
+  return { type: REMOVE_FROM_CART, id: productId }
+}
+
+export function clearCart() {
+  return { type: CLEAR_CART }
 }
 
 export function getCurrentUser() {
   return (dispatch, getState) => {
     const store = getState()
-    if (store.user.user && store.user.user.cart) return store
+    if (store.user.user && store.user.user.cart.length) return store
     const token = localStorage.getItem('token')
     if (!token) return store
     const baseUrl = window.location.origin
@@ -114,7 +107,7 @@ export function getCurrentUser() {
     return axios
       .get(`${baseUrl}/api/v1/users/current`, { headers: { Authorization: AuthStr } })
       .then(({ data }) => {
-        dispatch({ type: SET_USERNAME, user: data })
+        dispatch({ type: SET_USERNAME, user: { ...data, token } })
         return data
       })
       .catch(() => localStorage.removeItem('token'))
@@ -132,12 +125,12 @@ export function fetchState() {
 export function getTotal() {
   return (dispatch, getState) => {
     const store = getState()
-    const { cart } = store.user
+    const { cart } = store.user.user
     const { products } = store.product
     if (!products.length) return store.product.total
     const getProduct = (id) => products.filter((product) => product.id === id)[0]
-    const total = Object.entries(cart).reduce((acc, rec) => {
-      return acc + getProduct(rec[0]).price * rec[1]
+    const total = cart.reduce((acc, rec) => {
+      return acc + getProduct(rec.productId).price * rec.counter
     }, 0)
     dispatch({ type: SET_TOTAL, total })
     return total
