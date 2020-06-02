@@ -72,8 +72,8 @@ const RootComponent = (props) => {
       <RouterSelector history={history} location={props.location} context={props.context}>
         <Startup>
           <Switch>
-            <Route exact path="/*" component={() => <Home />} />
             <PrivateRoute exact path="/hidden-route" component={() => <DummyView />} />
+            <Route exact path="/*" component={() => <Home />} />
             <Route component={() => <NotFound />} />
           </Switch>
         </Startup>
@@ -83,3 +83,4 @@ const RootComponent = (props) => {
 }
 
 export default RootComponent
+

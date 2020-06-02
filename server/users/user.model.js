@@ -10,6 +10,7 @@ const schema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   createdDate: { type: Date, default: Date.now },
+  imageId: { type: mongoose.Types.ObjectId },
   cart: { type: [String], required: true }
 })
 

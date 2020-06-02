@@ -40,7 +40,7 @@ const LoginView = () => {
         if (location && location.state && location.state.direction === 'GO_BACK') {
           history.goBack()
         } else {
-          history.push('/')
+          history.push('/profile')
         }
       } catch (er) {
         setErr(true)

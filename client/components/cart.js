@@ -1,45 +1,37 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getProducts } from '../redux/reducers/products'
+import { getTotal } from '../redux/reducers/users'
 import Product from './product'
 
 const CartView = () => {
   //   const { products } = props
   //   const [err, setErr] = useState(false)
   const dispatch = useDispatch()
-  const user = useSelector((s) => s.user.user)
-  const { cart } = user
+  const cart = useSelector((s) => s.user.cart)
+  const total = useSelector((s) => s.user.total)
   const products = useSelector((s) => s.product.products)
-  const [cartObj, setCartObj] = useState({})
   useEffect(() => {
     dispatch(getProducts())
   }, [])
 
   useEffect(() => {
-    if (!cart || !cart.length) {
-      setCartObj({})
-      return
-    }
-    const obj = {}
-    if (!Array.isArray(cart)) return
-    cart.forEach((id) => {
-      if (!obj[id]) obj[id] = 1
-      else obj[id] += 1
-    })
-    setCartObj(obj)
-  }, [cart, products])
+    dispatch(getTotal())
+  }, [cart])
 
   return (
     <div className="">
-      {Object.entries(cartObj).map(([productId, counter]) => {
+      {Object.keys(cart).map((productId) => {
         return (
           <Product
             key={productId}
             product={products.filter((product) => product.id === productId)[0]}
-            cartCounter={counter}
           />
         )
       })}
+      <div className="card">
+        <div className="text-right">Total: {total}</div>
+      </div>
     </div>
   )
 }

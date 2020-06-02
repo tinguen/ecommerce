@@ -1,34 +1,33 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { addToCart, removeFromCart } from '../redux/reducers/users'
+import { useSelector } from 'react-redux'
+// import { addToCart, removeFromCart } from '../redux/reducers/users'
 
-const Product = (props) => {
+const Profile = (props) => {
   const { product } = props
-  const dispatch = useDispatch()
-  const counter = useSelector((s) => s.user.cart[product.id])
+  // const dispatch = useDispatch()
+  const user = useSelector((s) => s.user.user)
   const baseUrl = window.location.origin
 
   return (
     <div className="card flex flex-wrap justify-between">
       <div className="flex flex-wrap">
         <img
-          alt="Product img"
-          src={product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : ''}
+          alt="User img"
+          src={user.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : ''}
           style={{
             display: 'block'
           }}
           className="w-48 h-full flex-auto m-2"
         />
         <div className="m-2">
-          <div>{product.title}</div>
-          <div>{product.category}</div>
           <div>
-            {product.price} {product.currency}
+            {user.firstName} {user.lastName}
           </div>
+          <div>{user.username}</div>
         </div>
       </div>
-      <div>
-        <button
+      {/* <div> */}
+        {/* <button
           type="submit"
           className={`button ${!counter ? 'absolute opacity-0 -z-10' : ''}`}
           onClick={() => {
@@ -47,11 +46,11 @@ const Product = (props) => {
         >
           Add to cart
         </button>
-      </div>
+      </div> */}
     </div>
   )
 }
 
-Product.propTypes = {}
+Profile.propTypes = {}
 
-export default Product
+export default Profile
