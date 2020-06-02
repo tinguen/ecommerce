@@ -9,14 +9,15 @@ const CartView = () => {
   const dispatch = useDispatch()
   const userId = useSelector((s) => s.user.user.id)
   const token = useSelector((s) => s.user.user.token)
-  const cart = useSelector((s) => s.user.user.cart)
+  const user = useSelector((s) => s.user.user)
   const total = useSelector((s) => s.user.total)
   const products = useSelector((s) => s.product.products)
+  const { cart } = user
   useEffect(() => {
     if (!cart.length) return () => {}
     dispatch(getProducts())
     return () => dispatch(clearProducts())
-  }, [])
+  }, [cart])
   useEffect(() => {
     if (!products.length) return
     dispatch(getTotal())
@@ -50,8 +51,11 @@ const CartView = () => {
           Clear
         </button>
       </div>
-      {cart.map(({ productId }) => {
+      {cart.map((obj) => {
+        const { productId } = obj
+        console.log(cart, productId, products)
         const product = products.filter((p) => p.id === productId)[0]
+        console.log(product)
         return product ? <Product key={productId} product={product} /> : <div key={productId} />
       })}
       <div className="card">
