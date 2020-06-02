@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getProducts } from '../redux/reducers/products'
+import { getProducts, clearProducts } from '../redux/reducers/products'
 import Product from './product'
 
 const ProductView = () => {
@@ -10,7 +10,9 @@ const ProductView = () => {
   const products = useSelector((s) => s.product.products)
 
   useEffect(() => {
+    console.log(products)
     dispatch(getProducts())
+    return () => dispatch(clearProducts())
   }, [])
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Head from './head'
@@ -18,7 +18,7 @@ const Home = () => {
   const isLogged = useSelector((s) => s.user.isLogged)
   // console.log(user)
   // const user = useSelector((s) => s.user.user)
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(fetchState())
     dispatch(getCurrentUser())
   }, [])
