@@ -4,6 +4,7 @@ import axios from 'axios'
 import { getProducts, clearProducts } from '../redux/reducers/products'
 import { getTotal, clearCart } from '../redux/reducers/users'
 import Product from './product'
+import { history } from '../redux'
 
 const CartView = () => {
   const dispatch = useDispatch()
@@ -12,6 +13,7 @@ const CartView = () => {
   const user = useSelector((s) => s.user.user)
   const total = useSelector((s) => s.user.total)
   const products = useSelector((s) => s.product.products)
+  const isLogged = useSelector((s) => s.user.isLogged)
   const { cart } = user
   useEffect(() => {
     if (!cart.length) return () => {}
@@ -50,6 +52,19 @@ const CartView = () => {
         >
           Clear
         </button>
+        {isLogged ? (
+          <button
+            type="button"
+            className="button ml-2 mr-2 outline-none border-none"
+            onClick={() => {
+              history.push('/checkout')
+            }}
+          >
+            Checkout
+          </button>
+        ) : (
+          ''
+        )}
       </div>
       {cart.map((obj) => {
         const { productId } = obj

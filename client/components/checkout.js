@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useSelector, dispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { history } from '../redux'
 import { clearCart } from '../redux/reducers/users'
 
 const Checkout = () => {
+  const dispatch = useDispatch()
   const user = useSelector((s) => s.user.user)
   const [address, setAddress] = useState('')
   const [lastname, setLastname] = useState('')
@@ -42,6 +43,7 @@ const Checkout = () => {
         dispatch(clearCart())
         history.push('/profile')
       } catch (er) {
+        console.log(er)
         setErr(true)
       }
     }
