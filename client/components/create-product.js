@@ -45,7 +45,6 @@ const CreateView = () => {
         }
 
         if (data.data.id) obj.imageId = data.data.id
-        console.log(obj)
         await axios.post(`${baseUrl}/api/v1/products/create`, obj)
         setErr(false)
         history.push('/')

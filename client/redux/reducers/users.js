@@ -46,7 +46,7 @@ export default (state = initialState, action) => {
           ...state,
           user: {
             ...state.user,
-            cart: [...cart.slice(0, index, ...cart.slice(index + 1, cart.length))]
+            cart: [...cart.slice(0, index), ...cart.slice(index + 1, cart.length)]
           }
         }
       cart[index] = { ...cart[index], counter: cart[index].counter - 1 }

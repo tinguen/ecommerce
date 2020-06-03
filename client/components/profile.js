@@ -34,17 +34,14 @@ const Profile = (props) => {
       <div className="flex flex-wrap">
         <img
           alt="User img"
-          src={user.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : ''}
-          style={{
-            display: 'block'
-          }}
-          className="w-48 h-full flex-auto m-2"
+          src={user.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : 'images/noimage.png'}
+          className="w-48 h-48 m-2"
         />
         <div className="m-2">
+          <div>Username: {user.username}</div>
           <div>
-            {user.firstName} {user.lastName}
+            Name: {user.firstName} {user.lastName}
           </div>
-          <div>{user.username}</div>
         </div>
       </div>
       <div className="flex flex-col">

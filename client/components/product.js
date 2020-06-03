@@ -19,7 +19,9 @@ const Product = (props) => {
       <div className="flex flex-wrap">
         <img
           alt="Product img"
-          src={product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : ''}
+          src={
+            product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : 'images/noimage.png'
+          }
           style={{
             display: 'block'
           }}

@@ -24,8 +24,11 @@ const Order = (props) => {
           <div key={pr.productId} className="flex flex-wrap">
             <img
               alt="Product img"
-              src={product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : ''}
-
+              src={
+                product.imageId
+                  ? `${baseUrl}/api/v1/images/${product.imageId}`
+                  : 'images/noimage.png'
+              }
               className="w-48 h-48 m-2"
             />
             <div className="m-2">
@@ -43,7 +46,7 @@ const Order = (props) => {
           </div>
         )
       })}
-    <div>Total: {total}</div>
+      <div>Total: {total}</div>
     </div>
   )
 }

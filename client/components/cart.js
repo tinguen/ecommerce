@@ -16,10 +16,11 @@ const CartView = () => {
   const isLogged = useSelector((s) => s.user.isLogged)
   const { cart } = user
   useEffect(() => {
-    if (!cart.length) return () => {}
+    // if (!cart.length) return () => {}
     dispatch(getProducts())
     return () => dispatch(clearProducts())
-  }, [cart])
+  }, [])
+
   useEffect(() => {
     if (!products.length) return
     dispatch(getTotal())
@@ -56,6 +57,7 @@ const CartView = () => {
           <button
             type="button"
             className="button ml-2 mr-2 outline-none border-none"
+            disabled={!cart.length}
             onClick={() => {
               history.push('/checkout')
             }}
@@ -68,9 +70,7 @@ const CartView = () => {
       </div>
       {cart.map((obj) => {
         const { productId } = obj
-        console.log(cart, productId, products)
         const product = products.filter((p) => p.id === productId)[0]
-        console.log(product)
         return product ? <Product key={productId} product={product} /> : <div key={productId} />
       })}
       <div className="card">

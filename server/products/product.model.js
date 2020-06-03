@@ -8,8 +8,8 @@ const schema = new Schema({
   category: { type: String, required: true },
   currency: { type: String, required: true },
   imageId: {
-    type: mongoose.Types.ObjectId,
-    default: mongoose.Types.ObjectId('5ed52e425f737718e7ab66db')
+    type: mongoose.Types.ObjectId
+    // default: mongoose.Types.ObjectId('5ed52e425f737718e7ab66db')
   },
   createdDate: { type: Date, default: Date.now },
   price: { type: Number, required: true }

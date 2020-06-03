@@ -27,15 +27,12 @@ async function getByUserId(userId) {
 
 async function create(orderParam) {
   // validate
-  console.log(orderParam.userId)
   if (!(await User.findById(orderParam.userId))) {
     throw `Invalid user. Logout and login again`
   }
-  console.log(orderParam.cart)
 
   if (orderParam.cart && Array.isArray(orderParam.cart)) {
     for (let i = 0; i < orderParam.cart.length; i += 1) {
-      console.log(orderParam.cart[i])
       const product = orderParam.cart[i]
       // eslint-disable-next-line no-await-in-loop
       if (!(await Product.findById(product.productId))) {
