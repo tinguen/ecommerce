@@ -17,7 +17,7 @@ const schema = new Schema({
   cart: [cartSchema]
 })
 
-cartSchema.set('toJSON', {
+schema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform(doc, ret) {

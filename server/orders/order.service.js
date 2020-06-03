@@ -27,6 +27,7 @@ async function getByUserId(userId) {
 
 async function create(orderParam) {
   // validate
+  console.log(orderParam.userId)
   if (!(await User.findById(orderParam.userId))) {
     throw `Invalid user. Logout and login again`
   }

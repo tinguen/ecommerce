@@ -10,6 +10,7 @@ import ProductView from './products-view'
 import CartView from './cart'
 import PrivateRoute from './private-route'
 import Profile from './profile'
+import Checkout from './checkout'
 import { getCurrentUser, fetchState } from '../redux/reducers/users'
 // import wave from '../assets/images/wave.jpg'
 
@@ -43,6 +44,9 @@ const Home = () => {
         </Route>
         <Route exact path="/cart">
           <CartView />
+        </Route>
+        <Route exact path="/checkout">
+          <Checkout />
         </Route>
       </Switch>
     </div>
