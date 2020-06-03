@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
 import { history } from '../redux'
 
 const CreateView = () => {
@@ -9,6 +10,8 @@ const CreateView = () => {
   const [price, setPrice] = useState()
   const firstUpdate = useRef(true)
   const [err, setErr] = useState(false)
+  // const userId = useSelector((s) => s.user.user.id)
+  const token = useSelector((s) => s.user.user.token)
   const baseUrl = window.location.origin
   function handleSubmit(e) {
     e.preventDefault()
@@ -29,27 +32,23 @@ const CreateView = () => {
             method: 'post',
             url: `${baseUrl}/api/v1/images/upload`,
             data: formData,
-            headers: { 'Content-Type': 'multipart/form-data' }
+            headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}` }
+          }).catch((response) => {
+            console.log(response)
           })
-            // .then(({ data }) => {
-            //   console.log(data.id)
-            //   // setImageId(data.id)
-            //   document
-            //     .getElementById('img')
-            //     .setAttribute('src', `${baseUrl}/api/v1/images/${data.id}`)
-            //   return data.id
-            // })
-            .catch((response) => {
-              console.log(response)
-            })
         }
 
-        if (data.data.id) obj.imageId = data.data.id
-        await axios.post(`${baseUrl}/api/v1/products/create`, obj)
+        if (data && data.data.id) obj.imageId = data.data.id
+        console.log(token)
+        await axios.post(`${baseUrl}/api/v1/products/create`, obj, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
         setErr(false)
         history.push('/')
       } catch (er) {
-        console.log(er.data)
+        console.log(er)
         setErr(true)
       }
     }
@@ -65,23 +64,6 @@ const CreateView = () => {
 
     const file = document.getElementById('input-files').files
     reader.readAsDataURL(file[0])
-    // const formData = new FormData()
-
-    // formData.append('file', file[0])
-    // axios({
-    //   method: 'post',
-    //   url: `${baseUrl}/api/v1/images/upload`,
-    //   data: formData,
-    //   headers: { 'Content-Type': 'multipart/form-data' }
-    // })
-    //   .then(({ data }) => {
-    //     console.log(data.id)
-    //     setImageId(data.id)
-    //     document.getElementById('img').setAttribute('src', `${baseUrl}/api/v1/images/${data.id}`)
-    //   })
-    //   .catch((response) => {
-    //     console.log(response)
-    //   })
   }
 
   useEffect(() => {
