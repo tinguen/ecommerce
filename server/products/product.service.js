@@ -17,6 +17,10 @@ async function getAll() {
   return await Product.find()
 }
 
+async function getCategories() {
+  return await Product.distinct('category')
+}
+
 async function getById(id) {
   return await Product.findById(id)
 }
@@ -64,5 +68,6 @@ module.exports = {
   getById,
   create,
   update,
-  delete: _delete
+  delete: _delete,
+  getCategories
 }

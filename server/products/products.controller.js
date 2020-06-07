@@ -11,6 +11,13 @@ function createProduct(req, res, next) {
     .catch((err) => next(err))
 }
 
+function getCategories(req, res, next) {
+  productService
+    .getCategories()
+    .then((categories) => res.json(categories))
+    .catch((err) => next(err))
+}
+
 function getAll(req, res, next) {
   productService
     .getAll()
@@ -50,6 +57,7 @@ function _delete(req, res, next) {
 router.post('/create', createProduct)
 router.get('/', getAll)
 // router.get('/current', getCurrent)
+router.get('/category', getCategories)
 router.get('/:id', getById)
 router.put('/:id', update)
 router.delete('/:id', _delete)

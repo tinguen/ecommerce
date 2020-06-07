@@ -6,11 +6,19 @@
 @tailwind utilities;
 
 .card {
-    @apply flex-auto p-6 bg-white rounded-lg shadow-2xl m-4;
+    @apply flex-auto p-2 bg-white rounded-lg shadow-md;
+}
+
+.card-margin {
+    @apply  m-4;
 }
 
 .header-text {
-    @apply italic text-white m-2;
+    @apply italic text-black m-2;
+}
+
+.header-text-border {
+    @apply border-solid border-b-4 border-green-400;
 }
 
 .card-heading {
@@ -31,4 +39,8 @@
 
 .input-view {
   @apply flex-grow m-2 p-2 bg-gray-200 border-solid border-2 border-gray-300 rounded-lg;
+}
+
+.justify-g-center {
+  justify-items: center;
 }

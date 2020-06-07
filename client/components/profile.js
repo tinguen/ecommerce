@@ -30,7 +30,7 @@ const Profile = (props) => {
   }, [])
 
   return (
-    <div className="card flex flex-col flex-wrap justify-between">
+    <div className="card card-margin flex flex-col flex-wrap justify-between">
       <div className="flex flex-wrap">
         <img
           alt="User img"

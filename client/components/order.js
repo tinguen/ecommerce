@@ -8,7 +8,7 @@ const Order = (props) => {
     return acc + getProduct(rec.productId).price * rec.counter
   }, 0)
   return (
-    <div className="card flex flex-col flex-wrap justify-between">
+    <div className="card card-margin flex flex-col flex-wrap justify-between">
       <div>
         <div>Your order {order.id}</div>
         <div>

@@ -43,7 +43,7 @@ const CartView = () => {
 
   return (
     <div className="">
-      <div className="card flex justify-end">
+      <div className="card card-margin flex justify-end">
         <button
           type="button"
           className="button ml-2 mr-2 outline-none border-none"
@@ -73,7 +73,7 @@ const CartView = () => {
         const product = products.filter((p) => p.id === productId)[0]
         return product ? <Product key={productId} product={product} /> : <div key={productId} />
       })}
-      <div className="card">
+      <div className="card card-margin">
         <div className="text-right">Total: {total}</div>
       </div>
     </div>

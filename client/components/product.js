@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import classNames from 'classnames'
 import { addToCart, removeFromCart, setCounterCart } from '../redux/reducers/users'
 
 const Product = (props) => {
-  const { product } = props
+  const { product, className = '' } = props
   const dispatch = useDispatch()
   const prdt = useSelector((s) => s.user.user.cart.filter((p) => p.productId === product.id))
   const counter = prdt.length ? prdt[0].counter : 0
@@ -15,7 +16,7 @@ const Product = (props) => {
   }, [counter])
 
   return (
-    <div className="card flex flex-wrap justify-between">
+    <div className={classNames('card flex flex-wrap justify-between', className)}>
       <div className="flex flex-wrap">
         <img
           alt="Product img"

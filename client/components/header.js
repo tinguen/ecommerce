@@ -15,14 +15,8 @@ const Header = (props) => {
   const [middleLink, setMiddleLink] = useState(middle)
   const [leftLink, setLeftLink] = useState(left)
   const isLogged = useSelector((s) => s.user.isLogged)
-  // const user = useSelector((s) => s.user.user)
+  const cart = useSelector((s) => s.user.user.cart)
   const dispatch = useDispatch()
-  // function newHandleKeyPress(event) {
-  //   handleKeyPress(event)
-  //   if (event.charCode === 13) {
-  //     history.push(`/${event.target.value}`)
-  //   }
-  // }
   useEffect(() => {
     if (!isLogged) {
       setMiddleLink({ path: '/signup', title: 'Sign up' })
@@ -34,37 +28,34 @@ const Header = (props) => {
   }, [isLogged])
 
   return (
-    <header className="sm:flex bg-gray-900 p-6 mb-2 shadow-2xl">
+    <header className="sm:flex p-6 mb-2 border-solid border-b border-gray-800 shadow">
       <div className="sm:flex items-center flex-1">
-        <div className="header-text" id="repository-name">
-          <Link to={center.path}>{center.title}</Link>
+        <div className="">
+          <Link to={center.path} className="header-text header-text-border">
+            {center.title}
+          </Link>
         </div>
-        {/* <input
-          id="username"
-          type="text"
-          onKeyPress={newHandleKeyPress}
-          placeholder="username"
-          className="m-2 p-1 bg-gray-200 w-40 pl-2 outline-none rounded-full bg-gray-800 text-white"
-        /> */}
       </div>
       <nav className="flex flex-col-reverse sm:flex-row sm:justify-end sm:items-center flex-auto">
-        <div className="header-text">
+        <div>
           <button
             type="button"
             onClick={() => {
               history.push(leftLink.path)
             }}
+            className="header-text header-text-border"
           >
             {leftLink.title}
           </button>
         </div>
         {!isLogged ? (
-          <div className="header-text">
+          <div>
             <button
               type="button"
               onClick={() => {
                 history.push(middleLink.path)
               }}
+              className="header-text header-text-border"
             >
               {middleLink.title}
             </button>
@@ -82,24 +73,34 @@ const Header = (props) => {
             {middleLink.title}
           </button>
         </div> */}
-        <div className="header-text">
+        <span className="relative">
           <button
             type="button"
             onClick={() => {
               history.push('/cart')
             }}
+            className="header-text header-text-border"
           >
-            Cart
+            <span className="relative">
+              Cart
+              <div className="absolute text-xs text-center align-middle w-3 h-4 font-hairline rounded-full bg-red-600 text-white -top-2 -right-3">
+                {cart.length}
+              </div>
+            </span>
           </button>
-        </div>
+          {/* <div className="absolute text-xs text-center align-middle w-3 h-4 font-hairline rounded-full bg-red-600 text-white top-0 right-0">
+            {cart.length}
+          </div> */}
+        </span>
         {isLogged ? (
-          <div className="header-text">
+          <div>
             <button
               type="button"
               onClick={() => {
                 dispatch(logout())
                 localStorage.removeItem('token')
               }}
+              className="header-text header-text-border"
             >
               {right.title}
             </button>

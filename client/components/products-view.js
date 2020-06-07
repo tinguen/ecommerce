@@ -2,11 +2,9 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { getProducts, clearProducts } from '../redux/reducers/products'
-import Product from './product'
+import Product from './product-view'
 
 const ProductView = () => {
-  //   const { products } = props
-  //   const [err, setErr] = useState(false)
   const dispatch = useDispatch()
   const products = useSelector((s) => s.product.products)
   const userId = useSelector((s) => s.user.user.id)
@@ -33,7 +31,7 @@ const ProductView = () => {
   }, [cart])
 
   return (
-    <div className="">
+    <div className="m-2 grid grid-flow-row grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-g-center">
       {products.map((product) => {
         return <Product key={product.title} product={product} />
       })}

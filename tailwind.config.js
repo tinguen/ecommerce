@@ -2,6 +2,13 @@ module.exports = {
   purge: ['./client/**/*.html', './client/**/*.jsx', './client/**/*.js'],
   theme: {
     extend: {
+      fontSize: {
+        xxs: '0.5rem'
+      },
+      inset: {
+        '-2': '-0.5rem',
+        '-3': '-0.75rem'
+      },
       transformOrigin: {
         '1': '1px'
       },

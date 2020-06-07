@@ -24,7 +24,7 @@ const Home = () => {
     dispatch(getCurrentUser())
   }, [])
   return (
-    <div className="bg-blue-200 min-h-screen">
+    <div className=" min-h-screen">
       <Head title="Home" />
       <Header />
       <Switch>
