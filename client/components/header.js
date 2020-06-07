@@ -28,7 +28,7 @@ const Header = (props) => {
   }, [isLogged])
 
   return (
-    <header className="sm:flex p-6 mb-2 border-solid border-b border-gray-800 shadow">
+    <header className="bg-white sm:flex p-6 mb-2 shadow">
       <div className="sm:flex items-center flex-1">
         <div className="">
           <Link to={center.path} className="header-text header-text-border">

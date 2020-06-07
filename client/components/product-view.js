@@ -16,7 +16,12 @@ const Product = (props) => {
   }, [counter])
 
   return (
-    <div className={classNames('card flex flex-col justify-between w-full h-full', className)}>
+    <div
+      className={classNames(
+        'card flex flex-col justify-between w-full h-full hover:shadow-2xl bg-gray-200',
+        className
+      )}
+    >
       <img
         alt="Product img"
         src={product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : 'images/noimage.png'}
