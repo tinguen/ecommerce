@@ -24,7 +24,7 @@ const FilterView = () => {
   }
 
   return (
-    <div className="card hidden sm:block m-2">
+    <div className="card sm:block m-2 sm:sticky align-flex-start top-4">
       <div className="header-text w-32 text-left">Category</div>
       <ul className={` w-auto bg-white`}>
         <li className="pl-2 pr-2">
