@@ -11,6 +11,20 @@ function createProduct(req, res, next) {
     .catch((err) => next(err))
 }
 
+function getByCategory(req, res, next) {
+  productService
+    .getByCategory(req.params.category)
+    .then((products) => res.json(products))
+    .catch((err) => next(err))
+}
+
+function getByCategories(req, res, next) {
+  productService
+    .getByCategory(req.body)
+    .then((products) => res.json(products))
+    .catch((err) => next(err))
+}
+
 function getCategories(req, res, next) {
   productService
     .getCategories()
@@ -24,13 +38,6 @@ function getAll(req, res, next) {
     .then((products) => res.json(products))
     .catch((err) => next(err))
 }
-
-// function getCurrent(req, res, next) {
-//   productService
-//     .getById(req.user.sub)
-//     .then((user) => (user ? res.json(user) : res.sendStatus(404)))
-//     .catch((err) => next(err))
-// }
 
 function getById(req, res, next) {
   productService
@@ -56,8 +63,9 @@ function _delete(req, res, next) {
 // routes
 router.post('/create', createProduct)
 router.get('/', getAll)
-// router.get('/current', getCurrent)
+router.get('/category/:category', getByCategory)
 router.get('/category', getCategories)
+router.post('/category', getByCategories)
 router.get('/:id', getById)
 router.put('/:id', update)
 router.delete('/:id', _delete)

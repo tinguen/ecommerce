@@ -6,7 +6,7 @@
 @tailwind utilities;
 
 .card {
-    @apply flex-auto p-2 rounded-lg shadow-md bg-white;
+    @apply p-2 rounded-lg shadow-md bg-white;
 }
 
 .card-margin {
