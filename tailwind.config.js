@@ -8,7 +8,8 @@ module.exports = {
       inset: {
         '-2': '-0.5rem',
         '-3': '-0.75rem',
-        '4': '1rem'
+        '4': '1rem',
+        '25': '6.25rem'
       },
       transformOrigin: {
         '1': '1px'

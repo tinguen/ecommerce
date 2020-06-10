@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
-import {
-  setDisplayProductsByCategory,
-  getProducts,
-  clearProducts
-} from '../redux/reducers/products'
+import { setDisplayProductsByCategory, setSortBy, filterOptions } from '../redux/reducers/products'
 
 const FilterView = () => {
   const [categories, setCategories] = useState([])
@@ -24,15 +20,42 @@ const FilterView = () => {
   }
 
   return (
-    <div className="card sm:block m-2 sm:sticky align-flex-start top-4">
+    <div className="card m-2 sm:sticky align-flex-start top-25">
+      <ul>
+        Sort By
+        <li>
+          <button type="button" onClick={() => dispatch(setSortBy(filterOptions.sortBy.nameUp))}>
+            Name Up
+          </button>
+        </li>
+        <li>
+          <button type="button" onClick={() => dispatch(setSortBy(filterOptions.sortBy.nameDown))}>
+            Name Down
+          </button>
+        </li>
+        <li>
+          <button type="button" onClick={() => dispatch(setSortBy(filterOptions.sortBy.priceUp))}>
+            Price Up
+          </button>
+        </li>
+        <li>
+          <button type="button" onClick={() => dispatch(setSortBy(filterOptions.sortBy.priceDown))}>
+            Price Down
+          </button>
+        </li>
+        <li>
+          <button type="button" onClick={() => dispatch(setSortBy(filterOptions.sortBy.initial))}>
+            Clear
+          </button>
+        </li>
+      </ul>
       <div className="header-text w-32 text-left">Category</div>
       <ul className={` w-auto bg-white`}>
         <li className="pl-2 pr-2">
           <button
             type="button"
             onClick={() => {
-              dispatch(clearProducts())
-              dispatch(getProducts())
+              dispatch(setDisplayProductsByCategory(filterOptions.category.all))
             }}
             className="hover:underline focus:outline-none"
           >

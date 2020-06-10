@@ -5,16 +5,26 @@ export const filterOptions = {
     all: 'ALL'
   },
   sortBy: {
+    initial: 'INITIAL',
     nameUp: 'NAME_UPWARDS',
     nameDown: 'NAME_DOWNWARDS',
     priceUp: 'PRICE_UPWARDS',
     priceDown: 'PRICE_DOWNWARDS'
+  },
+  sortOrder: {
+    initial: 'INITIAL',
+    byName: 'title',
+    byPrice: 'price'
   }
 }
 const initialState = {
   products: [],
   displayProducts: [],
-  filters: { category: filterOptions.category.all }
+  filters: {
+    category: filterOptions.category.all,
+    sortBy: filterOptions.sortBy.initial,
+    sortOrder: []
+  }
 }
 const SET_PRODUCT = 'SET_PRODUCT'
 const SET_DISPLAY_PRODUCT = 'SET_DISPLAY_PRODUCT'
@@ -35,7 +45,7 @@ export default (state = initialState, action) => {
       return { ...state, ...initialState }
     }
     case SET_FILTER: {
-      return { ...state, filter: action.filters }
+      return { ...state, filters: action.filters }
     }
     default:
       return state
@@ -55,6 +65,60 @@ export function getProducts() {
   }
 }
 
+export function setSortBy(sortBy, sortOrder = []) {
+  // const sortByOrder = (arr) => {
+  //   if (!sortOrder.length) return arr
+  //   sortOrder.reduce((acc, rec) => {
+
+  //   }, 0)
+  // }
+  return (dispatch, getState) => {
+    const { products } = getState().product
+    let { displayProducts } = getState().product
+    const { filters } = getState().product
+    let sortOrderArr = sortOrder
+    if (!Array.isArray(sortOrderArr)) sortOrderArr = [sortOrder]
+    switch (sortBy) {
+      case filterOptions.sortBy.initial: {
+        if (
+          filters.category === filterOptions.category.all ||
+          filters.sortBy === filterOptions.sortBy.initial
+        ) {
+          // displayProducts = [...getState().product.displayProducts]
+          displayProducts = [...products]
+        }
+        // else if (filters.sortBy === filterOptions.sortBy.initial) {
+        //   displayProducts = [...products]
+        // }
+        else {
+          displayProducts = [...products.filter((product) => product.category === filters.category)]
+        }
+
+        break
+      }
+      case filterOptions.sortBy.priceUp: {
+        displayProducts.sort((first, second) => (first.price >= second.price ? 1 : -1))
+        break
+      }
+      case filterOptions.sortBy.priceDown: {
+        displayProducts.sort((first, second) => (first.price < second.price ? 1 : -1))
+        break
+      }
+      case filterOptions.sortBy.nameUp: {
+        displayProducts.sort((first, second) => first.title.localeCompare(second.title))
+        break
+      }
+      case filterOptions.sortBy.nameDown: {
+        displayProducts.sort((first, second) => second.title.localeCompare(first.title))
+        break
+      }
+      default:
+    }
+    dispatch({ type: SET_DISPLAY_PRODUCT, displayProducts: [...displayProducts] })
+    dispatch({ type: SET_FILTER, filters: { ...filters, sortBy, sortOrder } })
+  }
+}
+
 export function setFilter(filters) {
   return { type: SET_FILTER, filters }
 }
@@ -62,8 +126,15 @@ export function setFilter(filters) {
 export function setDisplayProductsByCategory(category) {
   let categoryArr = []
   return (dispatch, getState) => {
-    const store = getState()
-    const { filter } = store.product
+    const { products } = getState().product
+    const { filters } = getState().product
+    console.log(category)
+    if (category === filterOptions.category.all) {
+      dispatch({ type: SET_DISPLAY_PRODUCT, displayProducts: products })
+      dispatch(setSortBy(filters.sortBy))
+      dispatch(setFilter({ ...filters, category }))
+      return products.slice()
+    }
     if (!Array.isArray(category)) categoryArr = [category]
     else categoryArr = category
     const baseUrl = window.location.origin
@@ -71,7 +142,8 @@ export function setDisplayProductsByCategory(category) {
       .post(`${baseUrl}/api/v1/products/category`, categoryArr)
       .then(({ data }) => {
         dispatch({ type: SET_DISPLAY_PRODUCT, displayProducts: data })
-        dispatch(setFilter({ ...filter, category }))
+        dispatch(setFilter({ ...filters, category }))
+        if (!filters.sortBy === filterOptions.sortBy.initial) dispatch(setSortBy(filters.sortBy))
       })
       .catch((err) => console.log(err))
   }
