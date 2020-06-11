@@ -24,6 +24,9 @@ module.exports = {
         height: 'height',
         spacing: 'margin, padding',
         size: 'height, width, margin, padding'
+      },
+      maxHeight: {
+        '3/4': '75vh'
       }
     }
   },
