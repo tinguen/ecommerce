@@ -25,17 +25,8 @@ const Product = (props) => {
       <img
         alt="Product img"
         src={product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : 'images/noimage.png'}
-        className="w-full"
+        className="w-full object-cover h-32"
       />
-      {/* <div className="flex flex-wrap">
-        <div className="m-2">
-          <div>{product.title}</div>
-          <div>{product.category}</div>
-          <div>
-            {product.price} {product.currency}
-          </div>
-        </div>
-      </div> */}
       <div className="">
         <div className="m-2">
           <div>{product.title}</div>

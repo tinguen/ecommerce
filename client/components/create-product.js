@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { history } from '../redux'
+import { getProducts } from '../redux/reducers/products'
 
 const CreateView = () => {
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('')
   const [currency, setCurrency] = useState('')
   const [price, setPrice] = useState()
+  const [description, setDescription] = useState('')
   const firstUpdate = useRef(true)
   const [err, setErr] = useState(false)
+  const dispatch = useDispatch()
   // const userId = useSelector((s) => s.user.user.id)
   const token = useSelector((s) => s.user.user.token)
   const baseUrl = window.location.origin
@@ -21,7 +24,8 @@ const CreateView = () => {
           title,
           category,
           currency,
-          price
+          price,
+          description
         }
         const file = document.getElementById('input-files').files
         let data
@@ -45,6 +49,7 @@ const CreateView = () => {
             Authorization: `Bearer ${token}`
           }
         })
+        dispatch(getProducts())
         setErr(false)
         history.push('/')
       } catch (er) {
@@ -117,6 +122,19 @@ const CreateView = () => {
           placeholder="price"
           value={price || ''}
           onChange={(e) => setPrice(e.target.value)}
+        />
+        <br />
+
+        <label htmlFor="description" className="align-top">
+          Description
+        </label>
+        <textarea
+          className="input-view"
+          name="description"
+          cols="40"
+          rows="5"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
         <br />
 

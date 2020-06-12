@@ -1,8 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 import upload from '../_helpers/upload'
 
 const express = require('express')
 const mongoose = require('mongoose')
-// const db = require('../_helpers/db')
+const db = require('../_helpers/db')
+
+const { Product } = db
 
 const router = express.Router()
 // const { gfs} = db
@@ -41,8 +44,31 @@ function getFile(req, res, next) {
     .on('error', (err) => next(err))
 }
 
+// eslint-disable-next-line import/prefer-default-export
+export async function _delete(req, res, next) {
+  console.log(req)
+  const product = await Product.findOne({
+    owner: mongoose.Types.ObjectId(req.user.sub),
+    imageId: mongoose.Types.ObjectId(req.params.id)
+  })
+  if (!product) next(new Error('No admin rights'))
+  else {
+    try {
+      await gfs.delete(mongoose.Types.ObjectId(req.params.id))
+      product.imageId = null
+      await product.save()
+      res.send({})
+    } catch (err) {
+      next(err)
+    }
+  }
+}
+
 // routes
 router.post('/upload', uploadFile)
 router.get('/:id', getFile)
+router.delete('/delete/:id', _delete)
 
 module.exports = router
+const myModule = module.exports
+myModule.delete = _delete

@@ -11,7 +11,12 @@ const schema = new Schema({
     type: mongoose.Types.ObjectId
   },
   createdDate: { type: Date, default: Date.now },
-  price: { type: Number, required: true }
+  price: { type: Number, required: true },
+  description: { type: String, default: 'No description', required: true },
+  owner: { type: mongoose.Types.ObjectId, required: true },
+  isDeleted: { type: Boolean, default: false, required: true },
+  isChanged: { type: Boolean, default: false, required: true },
+  nextId: { type: mongoose.Types.ObjectId }
 })
 
 schema.set('toJSON', {

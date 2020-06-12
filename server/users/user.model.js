@@ -16,7 +16,8 @@ const schema = new Schema({
   lastName: { type: String, required: true },
   createdDate: { type: Date, default: Date.now },
   imageId: { type: mongoose.Types.ObjectId },
-  cart: [cartSchema]
+  cart: [cartSchema],
+  role: { type: String, default: 'USER', required: true }
 })
 
 schema.set('toJSON', {

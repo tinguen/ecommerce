@@ -5,10 +5,11 @@ const Order = (props) => {
   const baseUrl = window.location.origin
   const getProduct = (id) => products.filter((product) => product.id === id)[0]
   const total = order.cart.reduce((acc, rec) => {
+    if (!products.length) return acc
     return acc + getProduct(rec.productId).price * rec.counter
   }, 0)
   return (
-    <div className="card card-margin flex flex-col flex-wrap justify-between">
+    <div className="m-2 p-2 border-solid border-2 flex flex-col flex-wrap justify-between">
       <div>
         <div>Your order {order.id}</div>
         <div>
@@ -19,6 +20,7 @@ const Order = (props) => {
       </div>
       <div>Your cart:</div>
       {order.cart.map((pr) => {
+        if (!products.length) return <div key={pr.productId} />
         const product = products.filter((p) => p.id === pr.productId)[0]
         return (
           <div key={pr.productId} className="flex flex-wrap">

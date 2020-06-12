@@ -4,7 +4,24 @@ const productService = require('./product.service')
 
 const router = express.Router()
 
+function getByUser(req, res, next) {
+  // console.log(req.user.sub)
+  productService
+    .getByUser(req.user.sub)
+    .then((products) =>
+      res.json(
+        products.map((product) => {
+          // eslint-disable-next-line no-param-reassign
+          product.owner = null
+          return product
+        })
+      )
+    )
+    .catch((err) => next(err))
+}
+
 function createProduct(req, res, next) {
+  req.body.owner = req.user.sub
   productService
     .create(req.body)
     .then(() => res.json({}))
@@ -55,19 +72,28 @@ function update(req, res, next) {
 
 function _delete(req, res, next) {
   productService
-    .delete(req.params.id)
+    .delete(req.params.id, req.user.sub)
     .then(() => res.json({}))
+    .catch((err) => next(err))
+}
+
+function getAllAndFromOrders(req, res, next) {
+  productService
+    .getAllAndFromOrders(req.user.sub)
+    .then((products) => res.json(products))
     .catch((err) => next(err))
 }
 
 // routes
 router.post('/create', createProduct)
 router.get('/', getAll)
+router.get('/all', getAllAndFromOrders)
 router.get('/category/:category', getByCategory)
 router.get('/category', getCategories)
 router.post('/category', getByCategories)
+router.get('/user', getByUser)
 router.get('/:id', getById)
 router.put('/:id', update)
-router.delete('/:id', _delete)
+router.delete('/delete/:id', _delete)
 
 module.exports = router

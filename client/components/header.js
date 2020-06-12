@@ -30,7 +30,7 @@ const Header = (props) => {
   }, [isLogged])
 
   return (
-    <header ref={ref} className="bg-white sm:flex p-6 mb-2 shadow sm:sticky sm:top-0">
+    <header ref={ref} className="bg-white sm:flex p-6 mb-2 shadow sm:sticky sm:top-0 z-10">
       <div className="sm:flex items-center flex-1">
         <div className="">
           <Link to={center.path} className="header-text header-text-border focus:outline-none">

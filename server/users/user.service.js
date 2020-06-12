@@ -69,6 +69,8 @@ async function update(id, userParam) {
     userParam.hash = bcrypt.hashSync(userParam.password, 10)
   }
 
+  if (userParam.role) userParam.role = user.role
+
   // copy userParam properties to user
   Object.assign(user, userParam)
   // if (userParam.cart) user.push(userParam.cart)
