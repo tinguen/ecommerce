@@ -9,6 +9,7 @@ const cartSchema = new Schema({
 })
 
 const schema = new Schema({
+  email: {  type: String, unique: true, required: true },
   username: { type: String, unique: true, required: true },
   password: { type: String },
   hash: { type: String, required: true },
@@ -17,7 +18,9 @@ const schema = new Schema({
   createdDate: { type: Date, default: Date.now },
   imageId: { type: mongoose.Types.ObjectId },
   cart: [cartSchema],
-  role: { type: String, default: 'USER', required: true }
+  role: { type: String, default: 'USER', required: true },
+  isAuthenticated: { type: Boolean, default: true, required: true },
+  authToken: { type: String, unique: true, required: true }
 })
 
 schema.set('toJSON', {

@@ -11,6 +11,8 @@ import CartView from './cart'
 import PrivateRoute from './private-route'
 import Profile from './profile/profile'
 import Checkout from './checkout'
+import ThankYou from './thank-you/thank-you'
+import Verify from './verify/verify'
 import { getCurrentUser, fetchState } from '../redux/reducers/users'
 // import wave from '../assets/images/wave.jpg'
 
@@ -47,6 +49,12 @@ const Home = () => {
         </Route>
         <Route exact path="/checkout">
           <Checkout />
+        </Route>
+        <Route exact path="/thankyou">
+          <ThankYou />
+        </Route>
+        <Route exact path="/verify/:token">
+          <Verify />
         </Route>
       </Switch>
     </div>

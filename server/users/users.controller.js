@@ -56,9 +56,17 @@ function _delete(req, res, next) {
     .catch((err) => next(err))
 }
 
+function verifyEmail(req, res, next) {
+  userService
+    .verifyEmail(req.query.token)
+    .then(() => res.json({}))
+    .catch((err) => next(err))
+}
+
 // routes
 router.post('/authenticate', authenticate)
 router.post('/register', register)
+router.get('/verify_email', verifyEmail)
 router.get('/', getAll)
 router.get('/current', getCurrent)
 router.get('/:id', getById)

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { history } from '../redux'
 
 const RegisterView = () => {
+  const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [lastname, setLastname] = useState('')
   const [firstname, setFirstname] = useState('')
@@ -15,13 +16,14 @@ const RegisterView = () => {
       const baseUrl = window.location.origin
       try {
         await axios.post(`${baseUrl}/api/v1/users/register`, {
+          email,
           username,
           lastName: lastname,
           firstName: firstname,
           password
         })
         setErr(false)
-        history.push('/login')
+        history.push('/thankyou')
       } catch (er) {
         setErr(true)
       }
@@ -41,6 +43,17 @@ const RegisterView = () => {
     <div className="card">
       <form onSubmit={handleSubmit}>
         <h1>Sign Up For An Account</h1>
+
+        <label htmlFor="email">Email</label>
+        <input
+          className="input-view"
+          name="email"
+          placeholder="example@example.com"
+          value={email}
+          type="email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <br />
 
         <label htmlFor="username">Username</label>
         <input
