@@ -123,14 +123,24 @@ export function fetchState() {
 }
 
 export function getTotal() {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const store = getState()
     const { cart } = store.user.user
     const { products } = store.product
     if (!products.length) return store.product.total
     const getProduct = (id) => products.filter((product) => product.id === id)[0]
-    const total = cart.reduce((acc, rec) => {
-      return acc + getProduct(rec.productId).price * rec.counter
+    const total = await cart.reduce(async (acc, rec) => {
+      let product = getProduct(rec.productId)
+      if (!product) {
+        const baseUrl = window.location.origin
+        try {
+          const { data } = await axios.get(`${baseUrl}/api/v1/products/${rec.productId}`)
+          product = data
+        } catch (e) {
+          product = { price: 0 }
+        }
+      }
+      return acc + product.price * rec.counter
     }, 0)
     dispatch({ type: SET_TOTAL, total })
     return total

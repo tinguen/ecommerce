@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { getProducts, clearProducts } from '../redux/reducers/products'
@@ -8,6 +8,7 @@ import { history } from '../redux'
 
 const CartView = () => {
   const dispatch = useDispatch()
+  const [cartProducts, setCartProducts] = useState([])
   const userId = useSelector((s) => s.user.user.id)
   const token = useSelector((s) => s.user.user.token)
   const user = useSelector((s) => s.user.user)
@@ -24,6 +25,25 @@ const CartView = () => {
   useEffect(() => {
     if (!products.length) return
     dispatch(getTotal())
+    async function getProduct(productId) {
+      const baseUrl = window.location.origin
+      let product = null
+      try {
+        const { data } = await axios.get(`${baseUrl}/api/v1/products/${productId}`)
+        product = data
+      } catch (e) {
+        console.log(e)
+      }
+      return product
+    }
+    async function getCartProducts() {
+      cart.forEach(async (obj) => {
+        const { productId } = obj
+        const product = await getProduct(productId)
+        setCartProducts([...cartProducts, product])
+      })
+    }
+    getCartProducts()
   }, [cart, products])
 
   useEffect(() => {
@@ -40,6 +60,7 @@ const CartView = () => {
     }
     updateCart()
   }, [cart])
+
 
   return (
     <div className="">
@@ -68,10 +89,12 @@ const CartView = () => {
           ''
         )}
       </div>
-      {cart.map((obj) => {
-        const { productId } = obj
-        const product = products.filter((p) => p.id === productId)[0]
-        return product ? <Product key={productId} product={product} /> : <div key={productId} />
+      {cartProducts.map((product) => {
+        return product ? (
+          <Product key={product.productId} product={product} />
+        ) : (
+          <div key={product.productId} />
+        )
       })}
       <div className="card card-margin">
         <div className="text-right">Total: {total}</div>

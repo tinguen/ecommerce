@@ -16,17 +16,14 @@ const Product = (props) => {
   }, [counter])
 
   return (
-    <div className={classNames('card flex flex-wrap justify-between', className)}>
+    <div className={classNames('card card-margin flex flex-wrap justify-between', className)}>
       <div className="flex flex-wrap">
         <img
           alt="Product img"
           src={
             product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : 'images/noimage.png'
           }
-          style={{
-            display: 'block'
-          }}
-          className="w-48 h-full flex-auto m-2"
+          className="w-48 h-48 object-cover m-2"
         />
         <div className="m-2">
           <div>{product.title}</div>
