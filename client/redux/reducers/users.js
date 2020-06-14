@@ -140,8 +140,8 @@ export function getTotal() {
           product = { price: 0 }
         }
       }
-      return acc + product.price * rec.counter
-    }, 0)
+      return (await acc) + product.price * rec.counter
+    }, Promise.resolve(0))
     dispatch({ type: SET_TOTAL, total })
     return total
   }
