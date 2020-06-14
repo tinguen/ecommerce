@@ -127,7 +127,7 @@ export function getTotal() {
     const store = getState()
     const { cart } = store.user.user
     const { products } = store.product
-    if (!products.length) return store.product.total
+    // if (!products.length ) return store.product.total
     const getProduct = (id) => products.filter((product) => product.id === id)[0]
     const total = await cart.reduce(async (acc, rec) => {
       let product = getProduct(rec.productId)

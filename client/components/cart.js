@@ -23,13 +23,14 @@ const CartView = () => {
   }, [])
 
   useEffect(() => {
-    if (!products.length) return
+    if (!products.length && !cart.length) return
     dispatch(getTotal())
     async function getProduct(productId) {
       const baseUrl = window.location.origin
       let product = null
       try {
         const { data } = await axios.get(`${baseUrl}/api/v1/products/${productId}`)
+        console.log(data)
         product = data
       } catch (e) {
         console.log(e)
@@ -37,11 +38,16 @@ const CartView = () => {
       return product
     }
     async function getCartProducts() {
-      cart.forEach(async (obj) => {
-        const { productId } = obj
-        const product = await getProduct(productId)
-        setCartProducts([...cartProducts, product])
-      })
+      let prdts = []
+      await Promise.all(
+        cart.map(async (obj) => {
+          const { productId } = obj
+          const product = await getProduct(productId)
+          console.log(product)
+          prdts = [...prdts, product]
+        })
+      )
+      setCartProducts(prdts)
     }
     getCartProducts()
   }, [cart, products])
@@ -60,7 +66,6 @@ const CartView = () => {
     }
     updateCart()
   }, [cart])
-
 
   return (
     <div className="">
