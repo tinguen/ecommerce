@@ -38,7 +38,7 @@ async function create(orderParam) {
     if (!product) {
       throw new Error(`Invalid product. Clear the cart and add product again`)
     }
-    if (product.isDeleted || product.isChanged()) throw new Error('Some products are not available')
+    if (product.isDeleted || product.isChanged) throw new Error('Some products are not available')
   }
 
   const order = new Order(orderParam)
