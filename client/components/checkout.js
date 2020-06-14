@@ -85,7 +85,9 @@ const Checkout = () => {
           Order
         </button>
       </form>
-      <div className="text-red-800">{err ? 'Username is taken' : ''}</div>
+      <div className="text-red-800">
+        {err ? 'We are very sorry. Please clear the cart and make order again!' : ''}
+      </div>
     </div>
   )
 }

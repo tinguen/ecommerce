@@ -49,7 +49,7 @@ async function getByCategories(categories) {
 }
 
 async function getCategories() {
-  return await Product.distinct('category')
+  return await Product.distinct('category', { isChanged: false, isDeleted: false })
 }
 
 async function getById(id) {

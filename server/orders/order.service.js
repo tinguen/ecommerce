@@ -28,17 +28,17 @@ async function getByUserId(userId) {
 async function create(orderParam) {
   // validate
   if (!(await User.findById(orderParam.userId))) {
-    throw `Invalid user. Logout and login again`
+    throw new Error(`Invalid user. Logout and login again`)
   }
-
-  if (orderParam.cart && Array.isArray(orderParam.cart)) {
-    for (let i = 0; i < orderParam.cart.length; i += 1) {
-      const product = orderParam.cart[i]
-      // eslint-disable-next-line no-await-in-loop
-      if (!(await Product.findById(product.productId))) {
-        throw `Invalid product. Clear the cart and add product again`
-      }
+  if (!Array.isArray(orderParam.cart)) throw new Error('Cart is empty.')
+  for (let i = 0; i < orderParam.cart.length; i += 1) {
+    const prdt = orderParam.cart[i]
+    // eslint-disable-next-line no-await-in-loop
+    const product = await Product.findById(prdt.productId)
+    if (!product) {
+      throw new Error(`Invalid product. Clear the cart and add product again`)
     }
+    if (product.isDeleted || product.isChanged()) throw new Error('Some products are not available')
   }
 
   const order = new Order(orderParam)
