@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const schema = new Schema({
-  title: { type: String, unique: true, required: true },
+  title: { type: String, required: true },
   category: { type: String, required: true },
   currency: { type: String, default: 'UAH', required: true },
   imageId: {

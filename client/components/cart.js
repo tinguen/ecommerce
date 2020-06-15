@@ -23,7 +23,7 @@ const CartView = () => {
   }, [])
 
   useEffect(() => {
-    if (!products.length && !cart.length) return
+    // if (!products.length && !cart.length) return
     dispatch(getTotal())
     async function getProduct(productId) {
       const baseUrl = window.location.origin
