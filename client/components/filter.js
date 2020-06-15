@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
+import { createPopper } from '@popperjs/core'
 import { setDisplayProductsByCategory, setSortBy, filterOptions } from '../redux/reducers/products'
 
 const FilterView = () => {
   const [categories, setCategories] = useState([])
+  const [dropdownShow, setDropdownShow] = useState(false)
+  const [dropdownMsg, setDropdownMsg] = useState('Manual')
+  const btnDropdownRef = useRef()
+  const popoverDropdownRef = useRef()
   const dispatch = useDispatch()
   //   const filters = useSelector((s) => s.product.filter)
   useEffect(() => {
@@ -15,6 +20,17 @@ const FilterView = () => {
       .catch((err) => console.log(err))
   }, [])
 
+  function openDropdown() {
+    createPopper(btnDropdownRef.current, popoverDropdownRef.current, {
+      placement: 'bottom-start'
+    })
+    setDropdownShow(true)
+  }
+
+  function closeDropdown() {
+    setDropdownShow(false)
+  }
+
   function onClick(e) {
     dispatch(setDisplayProductsByCategory(e.target.innerHTML))
   }
@@ -22,36 +38,86 @@ const FilterView = () => {
   return (
     <div className="overflow-x-visible">
       <div className="card m-2 sm:sticky align-flex-start top-25 overflow-y-auto sm:max-h-3/4">
-        <ul>
-          Sort By
+        Sort by
+        <button
+          className="text-black text-sm px-3 py-3 outline-none focus:outline-none mr-1 mb-1 bg-white transition-all duration-150 ease"
+          type="button"
+          ref={btnDropdownRef}
+          onClick={() => {
+            // eslint-disable-next-line no-unused-expressions
+            dropdownShow ? closeDropdown() : openDropdown()
+          }}
+        >
+          {dropdownMsg}
+        </button>
+        <ul
+          ref={popoverDropdownRef}
+          className={`${
+            dropdownShow ? 'block ' : 'hidden '
+          } bg-white text-sm z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 p-1`}
+        >
           <li>
-            <button type="button" onClick={() => dispatch(setSortBy(filterOptions.sortBy.nameUp))}>
+            <button
+              type="button"
+              onClick={() => {
+                dispatch(setSortBy(filterOptions.sortBy.nameUp))
+                setDropdownMsg('Name up')
+                setDropdownShow(false)
+              }}
+              className="focus:outline-none"
+            >
               Name Up
             </button>
           </li>
           <li>
             <button
               type="button"
-              onClick={() => dispatch(setSortBy(filterOptions.sortBy.nameDown))}
+              onClick={() => {
+                dispatch(setSortBy(filterOptions.sortBy.nameDown))
+                setDropdownMsg('Name down')
+                setDropdownShow(false)
+              }}
+              className="focus:outline-none"
             >
               Name Down
             </button>
           </li>
           <li>
-            <button type="button" onClick={() => dispatch(setSortBy(filterOptions.sortBy.priceUp))}>
+            <button
+              type="button"
+              onClick={() => {
+                dispatch(setSortBy(filterOptions.sortBy.priceUp))
+                setDropdownMsg('Price up')
+                setDropdownShow(false)
+              }}
+              className="focus:outline-none"
+            >
               Price Up
             </button>
           </li>
           <li>
             <button
               type="button"
-              onClick={() => dispatch(setSortBy(filterOptions.sortBy.priceDown))}
+              onClick={() => {
+                dispatch(setSortBy(filterOptions.sortBy.priceDown))
+                setDropdownMsg('Price down')
+                setDropdownShow(false)
+              }}
+              className="focus:outline-none"
             >
               Price Down
             </button>
           </li>
           <li>
-            <button type="button" onClick={() => dispatch(setSortBy(filterOptions.sortBy.initial))}>
+            <button
+              type="button"
+              onClick={() => {
+                dispatch(setSortBy(filterOptions.sortBy.initial))
+                setDropdownMsg('Manual')
+                setDropdownShow(false)
+              }}
+              className="focus:outline-none"
+            >
               Clear
             </button>
           </li>
