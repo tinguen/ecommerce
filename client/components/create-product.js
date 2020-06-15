@@ -18,7 +18,7 @@ const CreateView = () => {
   const baseUrl = window.location.origin
   function handleSubmit(e) {
     e.preventDefault()
-    async function createUser() {
+    async function createProduct() {
       try {
         const obj = {
           title,
@@ -43,7 +43,6 @@ const CreateView = () => {
         }
 
         if (data && data.data.id) obj.imageId = data.data.id
-        console.log(token)
         await axios.post(`${baseUrl}/api/v1/products/create`, obj, {
           headers: {
             Authorization: `Bearer ${token}`
@@ -57,7 +56,7 @@ const CreateView = () => {
         setErr(true)
       }
     }
-    createUser()
+    createProduct()
   }
 
   function onUpload(e) {

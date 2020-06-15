@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
@@ -13,27 +13,34 @@ const Product = (props) => {
   const [product, setProduct] = useState({})
   const [reviews, setReviews] = useState([])
   const prdt = useSelector((s) => s.user.user.cart.filter((p) => p.productId === id))
+  const user = useSelector((s) => s.user.user)
   const counter = prdt.length ? prdt[0].counter : 0
   const [innerCounter, setInnerCounter] = useState(counter || 0)
   const [openTab, setOpenTab] = useState(1)
+  const [firstname, setFirstname] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [description, setDescription] = useState('')
+  const [stars, setStars] = useState(1)
+  const [errMsg, setErrMsg] = useState('Empty firstname or lastname')
+  const [err, setErr] = useState(false)
   const dispatch = useDispatch()
   //   const user = useSelector((s) => s.user.user)
   const baseUrl = window.location.origin
+  async function fetchReviews() {
+    try {
+      const { data } = await axios.get(`${baseUrl}/api/v1/reviews/product/${id}`)
+      setReviews(data.reverse())
+    } catch (er) {
+      console.log(err)
+    }
+  }
   useEffect(() => {
     async function fetchProduct() {
       try {
         const { data } = await axios.get(`${baseUrl}/api/v1/products/${id}`)
         setProduct(data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    async function fetchReviews() {
-      try {
-        const { data } = await axios.get(`${baseUrl}/api/v1/reviews/product/${id}`)
-        setReviews(data)
-      } catch (err) {
-        console.log(err)
+      } catch (er) {
+        console.log(er)
       }
     }
     fetchProduct()
@@ -42,8 +49,42 @@ const Product = (props) => {
   useEffect(() => {
     setInnerCounter(counter || 0)
   }, [counter])
+
+  function uploadReview() {
+    if (!user.token) {
+      setErrMsg('Please login to leave a review')
+      setErr(true)
+      return
+    }
+    if (!firstname || !lastname) {
+      setErr(true)
+      return
+    }
+    setErr(false)
+    const review = { firstName: firstname, lastName: lastname, stars, productId: id }
+    if (description) review.description = description
+    axios
+      .post(`${baseUrl}/api/v1/reviews/create`, review, {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      })
+      .then(() => {
+        fetchReviews()
+        setFirstname('')
+        setLastname('')
+        setDescription('')
+      })
+      .catch(() => setErr(true))
+  }
+
   return (
-    <div className={classNames('card card-margin relative', className)}>
+    <div
+      className={classNames(
+        `card card-margin relative ${product.id ? 'block' : 'hidden'}`,
+        className
+      )}
+    >
       <div className="absolute top-0 right-0 flex items-center">
         <div>{product.stars}</div>
         <img
@@ -144,11 +185,56 @@ const Product = (props) => {
         {product.description}
       </div>
       <div className={`${openTab === 2 ? 'block' : 'hidden'} p-2`} id="#link2">
-        <Rating
-          initialRating={1}
-          emptySymbol={<img alt="Star img" src="/images/star-black.png" className="icon w-4 h-4" />}
-          fullSymbol={<img alt="Star img" src="/images/star.png" className="icon w-4 h-4" />}
-        />
+        <div className={`${user.token ? 'block' : 'hidden'}`}>
+          Leave your thoughts:
+          <Rating
+            initialRating={stars}
+            emptySymbol={
+              <img alt="Star img" src="/images/star-black.png" className="icon w-4 h-4" />
+            }
+            fullSymbol={<img alt="Star img" src="/images/star.png" className="icon w-4 h-4" />}
+            onChange={(value) => setStars(value)}
+          />
+          <div className="flex">
+            <input
+              className="input-view"
+              name="firstname"
+              placeholder="First name"
+              value={firstname}
+              onChange={(e) => setFirstname(e.target.value)}
+            />
+            <input
+              className="input-view"
+              name="lastname"
+              placeholder="Last Name"
+              value={lastname}
+              onChange={(e) => setLastname(e.target.value)}
+            />
+          </div>
+          <label htmlFor="description" className="align-top">
+            Description
+          </label>
+          <textarea
+            className="input-view w-full"
+            name="description"
+            placeholder="Description"
+            value={description}
+            rows={5}
+            cols={20}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <div className={`${err ? 'block' : 'hidden'} text-red-900`}>{errMsg}</div>
+          <button type="button" className="button" onClick={uploadReview}>
+            Post
+          </button>
+        </div>
+        <div className={`${user.token ? 'hidden' : 'block'}`}>
+          Please{' '}
+          <Link to="/login" className="hover:underline">
+            login
+          </Link>{' '}
+          to leave a review
+        </div>
         {reviews.map((review) => {
           return <Review key={review.id} review={review} />
         })}

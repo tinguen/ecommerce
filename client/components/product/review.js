@@ -15,6 +15,13 @@ const Review = (props) => {
           />
         </div>
         <div>
+          <div>
+            {new Date(review.createdDate).toLocaleDateString()}{' '}
+            {new Date(review.createdDate).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </div>
           <div className="font-bold">
             {review.firstName} {review.lastName} wrote:
           </div>
@@ -23,6 +30,13 @@ const Review = (props) => {
       </div>
       <div className={`${review.description ? 'hidden' : 'block'} card card-margin`}>
         <div>
+          <div>
+            {new Date(review.createdDate).toLocaleDateString()}{' '}
+            {new Date(review.createdDate).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </div>
           <div className="relative font-bold">
             {review.firstName} {review.lastName} left {review.stars}
             <img
