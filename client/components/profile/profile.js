@@ -5,7 +5,7 @@ import Order from './order'
 import Product from './product'
 
 const Profile = (props) => {
-  const { product, color = 'blue' } = props
+  const { product } = props
   const [orders, setOrders] = useState([])
   const [products, setProducts] = useState([])
   const [ownProducts, setOwnProducts] = useState([])
@@ -58,7 +58,7 @@ const Profile = (props) => {
         <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
           <a
             className={`text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ${
-              openTab === 1 ? `text-white bg-${color}-900` : `text-${color}-600 bg-white`
+              openTab === 1 ? `text-white bg-gray-900` : `text-gray-600 bg-white`
             }`}
             onClick={(e) => {
               e.preventDefault()
@@ -78,7 +78,7 @@ const Profile = (props) => {
         >
           <a
             className={`text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ${
-              openTab === 2 ? `text-white bg-${color}-900` : `text-${color}-600 bg-white`
+              openTab === 2 ? `text-white bg-gray-900` : `text-gray-600 bg-white`
             }`}
             onClick={(e) => {
               e.preventDefault()
@@ -98,7 +98,7 @@ const Profile = (props) => {
         >
           <a
             className={`text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ${
-              openTab === 3 ? `text-white bg-${color}-900` : `text-${color}-600 bg-white`
+              openTab === 3 ? `text-white bg-gray-900` : `text-gray-600 bg-white`
             }`}
             onClick={(e) => {
               e.preventDefault()
