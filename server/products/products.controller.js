@@ -4,7 +4,7 @@ const productService = require('./product.service')
 
 const router = express.Router()
 
-function getByUser(req, res, next) {
+function getByUserId(req, res, next) {
   // console.log(req.user.sub)
   productService
     .getByUser(req.user.sub)
@@ -91,7 +91,7 @@ router.get('/all', getAllAndFromOrders)
 router.get('/category/:category', getByCategory)
 router.get('/category', getCategories)
 router.post('/category', getByCategories)
-router.get('/user', getByUser)
+router.get('/user', getByUserId)
 router.get('/:id', getById)
 router.put('/:id', update)
 router.delete('/delete/:id', _delete)

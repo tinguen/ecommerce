@@ -9,7 +9,7 @@ const cartSchema = new Schema({
 })
 
 const schema = new Schema({
-  email: {  type: String, unique: true, required: true },
+  email: { type: String, unique: true, required: true },
   username: { type: String, unique: true, required: true },
   password: { type: String },
   hash: { type: String, required: true },
@@ -27,6 +27,8 @@ schema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform(doc, ret) {
+    delete ret.authToken
+    delete ret.isAuthenticated
     delete ret._id
     delete ret.hash
     delete ret.password

@@ -13,6 +13,7 @@ import Profile from './profile/profile'
 import Checkout from './checkout'
 import ThankYou from './thank-you/thank-you'
 import Verify from './verify/verify'
+import Product from './product/product'
 import { getCurrentUser, fetchState } from '../redux/reducers/users'
 // import wave from '../assets/images/wave.jpg'
 
@@ -55,6 +56,9 @@ const Home = () => {
         </Route>
         <Route exact path="/verify/:token">
           <Verify />
+        </Route>
+        <Route exact path="/product/:id">
+          <Product />
         </Route>
       </Switch>
     </div>

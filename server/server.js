@@ -49,6 +49,7 @@ server.use('/api/v1/users', require('./users/users.controller'))
 server.use('/api/v1/products', require('./products/products.controller'))
 server.use('/api/v1/images', require('./images/images.controller'))
 server.use('/api/v1/orders', require('./orders/orders.controller'))
+server.use('/api/v1/reviews', require('./reviews/reviews.controller'))
 // global error handler
 server.use(errorHandler)
 

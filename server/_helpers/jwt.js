@@ -21,8 +21,10 @@ function jwt() {
     path: [
       // public routes that don't require authentication
       new RegExp(
-        '^(?!/api/v1/users|/api/v1/orders|/api/v1/products/create|/api/v1/products/delete|/api/v1/images/upload|/api/v1/images/delete|/api/v1/products/user|/api/v1/products/all).*'
+        '^(?!/api/v1/users|/api/v1/orders|/api/v1/products/create|/api/v1/products/delete|/api/v1/images/upload|/api/v1/images/delete|/api/v1/products/user|/api/v1/products/all|/api/v1/reviews).*'
       ),
+      new RegExp('^(/api/v1/reviews/product).*'),
+      '/api/v1/reviews/product/:id',
       '/api/v1/users/authenticate',
       '/api/v1/users/register',
       '/api/v1/users/verify_email'

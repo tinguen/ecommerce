@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import classNames from 'classnames'
 import { addToCart, removeFromCart, setCounterCart } from '../redux/reducers/users'
@@ -29,10 +30,23 @@ const Product = (props) => {
       />
       <div className="">
         <div className="m-2">
-          <div>{product.title}</div>
+          <div>
+            <Link to={`/product/${product.id}`} className="hover:underline">
+              {product.title}
+            </Link>
+          </div>
           <div>{product.category}</div>
           <div>
             {product.price} {product.currency}
+          </div>
+
+          <div>
+            {product.stars}
+            <img
+              alt="Star img"
+              src={`${baseUrl}/images/star.png`}
+              className="w-4 h-4 object-cover inline-block mr-2"
+            />
           </div>
         </div>
         <div className="flex items-center justify-center">

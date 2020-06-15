@@ -16,7 +16,8 @@ const schema = new Schema({
   owner: { type: mongoose.Types.ObjectId, required: true },
   isDeleted: { type: Boolean, default: false, required: true },
   isChanged: { type: Boolean, default: false, required: true },
-  nextId: { type: mongoose.Types.ObjectId }
+  nextId: { type: mongoose.Types.ObjectId },
+  stars: { type: Number, default: 0, required: true }
 })
 
 schema.set('toJSON', {
