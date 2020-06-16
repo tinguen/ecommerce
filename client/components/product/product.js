@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,6 +6,7 @@ import axios from 'axios'
 import Rating from 'react-rating'
 import { addToCart, removeFromCart, setCounterCart } from '../../redux/reducers/users'
 import Review from './review'
+import history from '../../redux/history'
 
 const Product = (props) => {
   const { className = '' } = props
@@ -26,26 +27,29 @@ const Product = (props) => {
   const dispatch = useDispatch()
   //   const user = useSelector((s) => s.user.user)
   const baseUrl = window.location.origin
-  async function fetchReviews() {
-    try {
-      const { data } = await axios.get(`${baseUrl}/api/v1/reviews/product/${id}`)
-      setReviews(data.reverse())
-    } catch (er) {
-      console.log(err)
-    }
-  }
+  const fetchReviews = useCallback(
+    async function _fetchReviews() {
+      try {
+        const { data } = await axios.get(`${baseUrl}/api/v1/reviews/product/${id}`)
+        setReviews(data.reverse())
+      } catch (er) {
+        history.push('/')
+      }
+    },
+    [baseUrl, id]
+  )
   useEffect(() => {
     async function fetchProduct() {
       try {
         const { data } = await axios.get(`${baseUrl}/api/v1/products/${id}`)
         setProduct(data)
       } catch (er) {
-        console.log(er)
+        history.push('/')
       }
     }
     fetchProduct()
     fetchReviews()
-  }, [baseUrl, id])
+  }, [baseUrl, fetchReviews, id])
   useEffect(() => {
     setInnerCounter(counter || 0)
   }, [counter])

@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux'
 import classNames from 'classnames'
 import axios from 'axios'
 
+import history from '../../redux/history'
+
 const Product = (props) => {
   const { product, className = '', ownProducts, setOwnProducts } = props
   const user = useSelector((s) => s.user.user)
@@ -22,7 +24,7 @@ const Product = (props) => {
         ]
         setOwnProducts(ownP)
       } catch (er) {
-        console.log(er)
+        history.push('/')
       }
     }
     deleteProduct()

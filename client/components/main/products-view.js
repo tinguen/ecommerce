@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import { getProducts, clearProducts } from '../redux/reducers/products'
+import { getProducts, clearProducts } from '../../redux/reducers/products'
 import Product from './product-view'
 import FilterView from './filter'
 
@@ -14,7 +14,7 @@ const ProductView = () => {
   useEffect(() => {
     dispatch(getProducts())
     return () => dispatch(clearProducts())
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     async function updateCart() {
@@ -29,7 +29,7 @@ const ProductView = () => {
       )
     }
     updateCart()
-  }, [cart])
+  }, [cart, token, userId])
 
   return (
     <div className="block sm:flex">

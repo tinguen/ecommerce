@@ -6,8 +6,8 @@ import Header from './header'
 import RegisterView from './signup'
 import LoginView from './login'
 import CreateView from './create-product'
-import ProductView from './products-view'
-import CartView from './cart'
+import ProductView from './main/products-view'
+import CartView from './cart/cart'
 import PrivateRoute from './private-route'
 import Profile from './profile/profile'
 import Checkout from './checkout'
@@ -25,7 +25,7 @@ const Home = () => {
   useLayoutEffect(() => {
     dispatch(fetchState())
     dispatch(getCurrentUser())
-  }, [])
+  }, [dispatch])
   return (
     <div className="bg-gray-200 min-h-screen">
       <Head title="Home" />

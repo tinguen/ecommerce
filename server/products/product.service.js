@@ -21,7 +21,6 @@ async function getAll() {
 
 async function getAllAndFromOrders(userId) {
   const orders = await Order.find({ userId })
-  console.log(orders[0].cart, orders)
   const products = await Product.find({ isDeleted: false, isChanged: false })
   if (!orders.length) return products
   const productsIds = orders
@@ -31,12 +30,10 @@ async function getAllAndFromOrders(userId) {
       }, [])
     )
     .flat()
-  console.log(productsIds)
   const productsFromOrders = await Product.find({
     $or: [{ isDeleted: true }, { isChanged: true }],
     _id: productsIds
   })
-  console.log(productsFromOrders)
   return [...products, ...productsFromOrders]
 }
 

@@ -73,7 +73,7 @@ async function create(userParam) {
     text: authToken,
     html: getEmailHtml(user, authToken)
   }
-  sgMail.send(msg).catch((e) => console.log(e))
+  await sgMail.send(msg).catch(() => {})
   // const res = await User.findById(user.id)
   // return {
   //   username: res.username,

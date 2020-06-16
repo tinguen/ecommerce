@@ -8,7 +8,7 @@ function errorHandler(err, req, res, next) {
 
   if (err.name === 'ValidationError') {
     // mongoose validation error
-    return res.status(400).json({ message: err.message })
+    return res.status(400).json({ message: 'Validation error' })
   }
 
   if (err.name === 'UnauthorizedError') {
@@ -17,8 +17,7 @@ function errorHandler(err, req, res, next) {
   }
 
   // default to 500 server error
-  console.log(err.message)
-  return res.status(500).json({ message: err.message })
+  return res.status(500).json({ message: 'Unknown error' })
 }
 
 module.exports = errorHandler

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import classNames from 'classnames'
-import { addToCart, removeFromCart, setCounterCart } from '../redux/reducers/users'
+import { addToCart, removeFromCart, setCounterCart } from '../../redux/reducers/users'
 
 const Product = (props) => {
   const { product, className = '' } = props

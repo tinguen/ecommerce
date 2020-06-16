@@ -26,7 +26,6 @@ const Header = (props) => {
       setMiddleLink(middle)
       setLeftLink(left)
     }
-    console.log(ref)
   }, [isLogged])
 
   return (

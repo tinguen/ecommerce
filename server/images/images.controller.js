@@ -16,14 +16,12 @@ mongoose.connection.once('open', () => {
   gfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
     bucketName: 'photos'
   })
-  console.log('Connection Successful')
 })
 
 const uploadFile = async (req, res, next) => {
   try {
     await upload(req, res)
 
-    console.log(req.file)
     if (!req.file) {
       res.status(400)
       return res.send({ message: `You must select a file.` })
@@ -46,7 +44,6 @@ function getFile(req, res, next) {
 
 // eslint-disable-next-line import/prefer-default-export
 export async function _delete(req, res, next) {
-  console.log(req)
   const product = await Product.findOne({
     owner: mongoose.Types.ObjectId(req.user.sub),
     imageId: mongoose.Types.ObjectId(req.params.id)

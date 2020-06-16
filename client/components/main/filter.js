@@ -2,7 +2,11 @@ import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { createPopper } from '@popperjs/core'
-import { setDisplayProductsByCategory, setSortBy, filterOptions } from '../redux/reducers/products'
+import {
+  setDisplayProductsByCategory,
+  setSortBy,
+  filterOptions
+} from '../../redux/reducers/products'
 
 const FilterView = () => {
   const [categories, setCategories] = useState([])
@@ -17,7 +21,7 @@ const FilterView = () => {
     axios
       .get(`${baseUrl}/api/v1/products/category`)
       .then(({ data }) => setCategories(data))
-      .catch((err) => console.log(err))
+      .catch(() => {})
   }, [])
 
   function openDropdown() {

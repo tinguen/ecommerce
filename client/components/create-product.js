@@ -37,9 +37,7 @@ const CreateView = () => {
             url: `${baseUrl}/api/v1/images/upload`,
             data: formData,
             headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}` }
-          }).catch((response) => {
-            console.log(response)
-          })
+          }).catch(() => {})
         }
 
         if (data && data.data.id) obj.imageId = data.data.id
@@ -52,7 +50,6 @@ const CreateView = () => {
         setErr(false)
         history.push('/')
       } catch (er) {
-        console.log(er)
         setErr(true)
       }
     }

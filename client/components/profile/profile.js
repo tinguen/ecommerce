@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useSelector } from 'react-redux'
 import Order from './order'
 import Product from './product'
+import history from '../../redux/history'
 
 const Profile = (props) => {
   const { product } = props
@@ -22,7 +23,7 @@ const Profile = (props) => {
         })
         setProducts(data)
       } catch (er) {
-        console.log(er)
+        history.push('/')
       }
     }
     async function getOrders() {
@@ -33,7 +34,7 @@ const Profile = (props) => {
         })
         setOrders(data)
       } catch (er) {
-        console.log(er)
+        history.push('/')
       }
     }
     async function getOwnProducts() {
@@ -44,13 +45,13 @@ const Profile = (props) => {
         })
         setOwnProducts(data)
       } catch (er) {
-        console.log(er)
+        history.push('/')
       }
     }
     getProducts()
     getOrders()
     getOwnProducts()
-  }, [])
+  }, [baseUrl, user.id, user.token])
 
   return (
     <div>

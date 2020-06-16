@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import { getProducts, clearProducts } from '../redux/reducers/products'
-import { getTotal, clearCart } from '../redux/reducers/users'
+import { getProducts, clearProducts } from '../../redux/reducers/products'
+import { getTotal, clearCart } from '../../redux/reducers/users'
 import Product from './product'
-import { history } from '../redux'
+import { history } from '../../redux'
 
 const CartView = () => {
   const dispatch = useDispatch()
@@ -20,7 +20,7 @@ const CartView = () => {
     // if (!cart.length) return () => {}
     dispatch(getProducts())
     return () => dispatch(clearProducts())
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     // if (!products.length && !cart.length) return
@@ -30,10 +30,9 @@ const CartView = () => {
       let product = null
       try {
         const { data } = await axios.get(`${baseUrl}/api/v1/products/${productId}`)
-        console.log(data)
         product = data
       } catch (e) {
-        console.log(e)
+        history.push('/')
       }
       return product
     }
@@ -43,14 +42,13 @@ const CartView = () => {
         cart.map(async (obj) => {
           const { productId } = obj
           const product = await getProduct(productId)
-          console.log(product)
           prdts = [...prdts, product]
         })
       )
       setCartProducts(prdts)
     }
     getCartProducts()
-  }, [cart, products])
+  }, [cart, dispatch, products])
 
   useEffect(() => {
     async function updateCart() {
@@ -65,7 +63,7 @@ const CartView = () => {
       )
     }
     updateCart()
-  }, [cart])
+  }, [cart, token, userId])
 
   return (
     <div className="">

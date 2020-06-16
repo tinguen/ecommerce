@@ -13,7 +13,6 @@ const Checkout = () => {
   const userId = useSelector((s) => s.user.user.id)
   const token = useSelector((s) => s.user.user.token)
   const cart = useSelector((s) => s.user.user.cart)
-  // const firstUpdate = useRef(true)
   const [err, setErr] = useState(false)
 
   useEffect(() => {
@@ -43,7 +42,6 @@ const Checkout = () => {
         dispatch(clearCart())
         history.push('/profile')
       } catch (er) {
-        console.log(er)
         setErr(true)
       }
     }
