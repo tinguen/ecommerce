@@ -1,4 +1,6 @@
 /* eslint-disable no-underscore-dangle */
+import axios from 'axios'
+
 const express = require('express')
 const productService = require('./product.service')
 
@@ -84,6 +86,17 @@ function getAllAndFromOrders(req, res, next) {
     .catch((err) => next(err))
 }
 
+function getCurrencyExchange(req, res, next) {
+  const currencyExchangeUrl = 'https://api.exchangeratesapi.io/latest'
+  const query = {
+    symbols: req.params && req.params.symbols ? req.params.symbols : 'USD,CAD'
+  }
+  axios
+    .get(currencyExchangeUrl, { params: query })
+    .then(({ data: curr }) => res.json(curr))
+    .catch((err) => next(err))
+}
+
 // routes
 router.post('/create', createProduct)
 router.get('/', getAll)
@@ -91,6 +104,7 @@ router.get('/all', getAllAndFromOrders)
 router.get('/category/:category', getByCategory)
 router.get('/category', getCategories)
 router.post('/category', getByCategories)
+router.get('/currency', getCurrencyExchange)
 router.get('/user', getByUserId)
 router.get('/:id', getById)
 router.put('/:id', update)
