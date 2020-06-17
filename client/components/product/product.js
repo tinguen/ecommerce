@@ -97,17 +97,19 @@ const Product = (props) => {
           className="w-4 h-4 object-cover inline-block ml-2 mr-2"
         />
       </div>
-      <div className="flex flex-wrap justify-between">
+      <div className="sm:flex sm:flex-wrap justify-between">
         <div className="flex flex-wrap">
-          <img
-            alt="Star img"
-            src={
-              product.imageId
-                ? `${baseUrl}/api/v1/images/${product.imageId}`
-                : `${baseUrl}/images/noimage.png`
-            }
-            className="w-48 h-48 object-cover m-2"
-          />
+          <div className="w-full h-0 pt-full mt-4 mb-4 sm:m-0 relative sm:h-48 sm:w-48 sm:pt-0 sm:block">
+            <img
+              alt="Star img"
+              src={
+                product.imageId
+                  ? `${baseUrl}/api/v1/images/${product.imageId}`
+                  : `${baseUrl}/images/noimage.png`
+              }
+              className="w-full h-full absolute sm:w-48 sm:h-48 object-cover sm:mt-0 sm:block top-0 left-0"
+            />
+          </div>
           <div className="m-2">
             <div>{product.title}</div>
             <div>{product.category}</div>
@@ -190,7 +192,7 @@ const Product = (props) => {
       </div>
       <div className={`${openTab === 2 ? 'block' : 'hidden'} p-2`} id="#link2">
         <div className={`${user.token ? 'block' : 'hidden'}`}>
-          Leave your thoughts:
+          Leave your thoughts:{' '}
           <Rating
             initialRating={stars}
             emptySymbol={
@@ -199,7 +201,7 @@ const Product = (props) => {
             fullSymbol={<img alt="Star img" src="/images/star.png" className="icon w-4 h-4" />}
             onChange={(value) => setStars(value)}
           />
-          <div className="flex">
+          <div className="flex flex-wrap">
             <input
               className="input-view"
               name="firstname"

@@ -27,6 +27,12 @@ module.exports = {
       },
       maxHeight: {
         '3/4': '75vh'
+      },
+      minWidth: {
+        '1/4': '25vh'
+      },
+      spacing: {
+        full: '100%'
       }
     }
   },

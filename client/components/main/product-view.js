@@ -23,11 +23,15 @@ const Product = (props) => {
         className
       )}
     >
-      <img
-        alt="Product img"
-        src={product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : 'images/noimage.png'}
-        className="w-full object-cover h-32"
-      />
+      <div className="w-full h-0 pt-full relative">
+        <img
+          alt="Product img"
+          src={
+            product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : 'images/noimage.png'
+          }
+          className="w-full h-full object-cover absolute top-0 left-0"
+        />
+      </div>
       <div className="">
         <div className="m-2">
           <div>

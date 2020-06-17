@@ -40,7 +40,7 @@ const FilterView = () => {
   }
 
   return (
-    <div className="overflow-x-visible">
+    <div className="overflow-x-visible sm:min-w-1/4">
       <div className="card m-2 sm:sticky align-flex-start top-25 overflow-y-auto sm:max-h-3/4">
         Sort by
         <button

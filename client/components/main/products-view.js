@@ -34,10 +34,14 @@ const ProductView = () => {
   return (
     <div className="block sm:flex">
       <FilterView />
-      <div className="m-2 grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-g-center">
+      <div className="m-2 grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-g-center flex-auto">
         {products.map((product) => {
           return (
-            <Product key={product.title} product={product} className="transform hover:scale-105" />
+            <Product
+              key={product.title}
+              product={product}
+              className="transform hover:scale-105 m-2 sm:m-0"
+            />
           )
         })}
       </div>
