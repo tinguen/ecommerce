@@ -1,20 +1,14 @@
 import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import axios from 'axios'
-import { getProducts, clearProducts } from '../../redux/reducers/products'
 import Product from './product-view'
 import FilterView from './filter'
 
 const ProductView = () => {
-  const dispatch = useDispatch()
   const products = useSelector((s) => s.product.displayProducts)
   const userId = useSelector((s) => s.user.user.id)
   const token = useSelector((s) => s.user.user.token)
   const cart = useSelector((s) => s.user.user.cart)
-  useEffect(() => {
-    dispatch(getProducts())
-    return () => dispatch(clearProducts())
-  }, [dispatch])
 
   useEffect(() => {
     async function updateCart() {

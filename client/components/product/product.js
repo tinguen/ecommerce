@@ -7,6 +7,7 @@ import Rating from 'react-rating'
 import { addToCart, removeFromCart, setCounterCart } from '../../redux/reducers/users'
 import Review from './review'
 import history from '../../redux/history'
+import addCurrentPrice from '../utils/product'
 
 const Product = (props) => {
   const { className = '' } = props
@@ -15,6 +16,7 @@ const Product = (props) => {
   const [reviews, setReviews] = useState([])
   const prdt = useSelector((s) => s.user.user.cart.filter((p) => p.productId === id))
   const user = useSelector((s) => s.user.user)
+  const currency = useSelector((s) => s.product.currentCurrency)
   const counter = prdt.length ? prdt[0].counter : 0
   const [innerCounter, setInnerCounter] = useState(counter || 0)
   const [openTab, setOpenTab] = useState(1)
@@ -38,21 +40,26 @@ const Product = (props) => {
     },
     [baseUrl, id]
   )
+
   useEffect(() => {
     async function fetchProduct() {
       try {
         const { data } = await axios.get(`${baseUrl}/api/v1/products/${id}`)
-        setProduct(data)
+        setProduct(addCurrentPrice(data))
       } catch (er) {
         history.push('/')
       }
     }
     fetchProduct()
     fetchReviews()
-  }, [baseUrl, fetchReviews, id])
+  }, [baseUrl, fetchReviews, id, currency])
   useEffect(() => {
     setInnerCounter(counter || 0)
   }, [counter])
+
+  // useEffect(() => {
+  //   setProduct(addCurrentPrice(product))
+  // }, [])
 
   function uploadReview() {
     if (!user.token) {
@@ -114,7 +121,7 @@ const Product = (props) => {
             <div>{product.title}</div>
             <div>{product.category}</div>
             <div>
-              {product.price} {product.currency}
+              {product.currentPrice} {currency}
             </div>
           </div>
         </div>

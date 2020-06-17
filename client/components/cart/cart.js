@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
-import { getProducts, clearProducts } from '../../redux/reducers/products'
 import { getTotal, clearCart } from '../../redux/reducers/users'
 import Product from './product'
 import { history } from '../../redux'
+import addCurrentPrice from '../utils/product'
 
 const CartView = () => {
   const dispatch = useDispatch()
@@ -16,38 +16,28 @@ const CartView = () => {
   const products = useSelector((s) => s.product.products)
   const isLogged = useSelector((s) => s.user.isLogged)
   const { cart } = user
-  useEffect(() => {
-    // if (!cart.length) return () => {}
-    dispatch(getProducts())
-    return () => dispatch(clearProducts())
-  }, [dispatch])
 
   useEffect(() => {
     // if (!products.length && !cart.length) return
     dispatch(getTotal())
-    async function getProduct(productId) {
+    async function fetchCartProducts() {
       const baseUrl = window.location.origin
-      let product = null
+      const ids = cart
+        .reduce((acc, rec) => {
+          return `${acc}${rec.productId},`
+        }, '')
+        .slice(0, -1)
       try {
-        const { data } = await axios.get(`${baseUrl}/api/v1/products/${productId}`)
-        product = data
-      } catch (e) {
-        history.push('/')
-      }
-      return product
-    }
-    async function getCartProducts() {
-      let prdts = []
-      await Promise.all(
-        cart.map(async (obj) => {
-          const { productId } = obj
-          const product = await getProduct(productId)
-          prdts = [...prdts, product]
+        const { data: prdts } = await axios.get(`${baseUrl}/api/v1/products/id`, {
+          params: { id: ids }
         })
-      )
-      setCartProducts(prdts)
+        setCartProducts(addCurrentPrice(prdts))
+      } catch (e) {
+        setCartProducts([])
+        // history.push('/')
+      }
     }
-    getCartProducts()
+    fetchCartProducts()
   }, [cart, dispatch, products])
 
   useEffect(() => {

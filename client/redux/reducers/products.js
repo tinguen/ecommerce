@@ -15,11 +15,18 @@ export const filterOptions = {
     initial: 'INITIAL',
     byName: 'title',
     byPrice: 'price'
+  },
+  currency: {
+    euro: 'EUR',
+    dollar: 'USD',
+    canadianDollar: 'CAD'
   }
 }
 const initialState = {
   products: [],
   displayProducts: [],
+  currentCurrency: filterOptions.currency.euro,
+  rates: {},
   filters: {
     category: filterOptions.category.all,
     sortBy: filterOptions.sortBy.initial,
@@ -30,6 +37,8 @@ const SET_PRODUCT = 'SET_PRODUCT'
 const SET_DISPLAY_PRODUCT = 'SET_DISPLAY_PRODUCT'
 const CLEAR_PRODUCT = 'CLEAR_PRODUCT'
 const SET_FILTER = 'SET_FILTER'
+const SET_CURRENCY = 'SET_CURRENCY'
+const SET_CURRENCY_RATES = 'SET_CURRENCY_RATES'
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PRODUCT: {
@@ -47,6 +56,12 @@ export default (state = initialState, action) => {
     case SET_FILTER: {
       return { ...state, filters: action.filters }
     }
+    case SET_CURRENCY: {
+      return { ...state, currentCurrency: action.currency }
+    }
+    case SET_CURRENCY_RATES: {
+      return { ...state, rates: action.rates }
+    }
     default:
       return state
   }
@@ -56,12 +71,22 @@ export function updateProducts(products) {
   return { type: SET_PRODUCT, products }
 }
 
-export function getProducts() {
-  return (dispatch) => {
+export function fetchProducts() {
+  return (dispatch, getState) => {
     const baseUrl = window.location.origin
+    const rate = getState().product.rates[getState().product.currentCurrency]
     return axios
       .get(`${baseUrl}/api/v1/products`)
-      .then(({ data }) => dispatch({ type: SET_PRODUCT, products: data }))
+      .then(({ data }) =>
+        dispatch({
+          type: SET_PRODUCT,
+          products: data.map((product) => ({
+            ...product,
+            currentPrice: (product.price * rate).toFixed(2)
+          }))
+        })
+      )
+      .catch(() => {})
   }
 }
 
@@ -128,7 +153,6 @@ export function setDisplayProductsByCategory(category) {
   return (dispatch, getState) => {
     const { products } = getState().product
     const { filters } = getState().product
-    console.log(category)
     if (category === filterOptions.category.all) {
       dispatch({ type: SET_DISPLAY_PRODUCT, displayProducts: products })
       dispatch(setSortBy(filters.sortBy))
@@ -151,4 +175,50 @@ export function setDisplayProductsByCategory(category) {
 
 export function clearProducts() {
   return { type: CLEAR_PRODUCT }
+}
+
+export function setCurrency(currency) {
+  return (dispatch, getState) => {
+    if (Object.values(filterOptions.currency).includes(currency)) {
+      const rate = getState().product.rates[currency]
+      const { products } = getState().product
+      const { displayProducts } = getState().product
+      dispatch({ type: SET_CURRENCY, currency })
+      dispatch({
+        type: SET_PRODUCT,
+        products: products.map((product) => ({
+          ...product,
+          currentPrice: (product.price * rate).toFixed(2)
+        }))
+      })
+      dispatch({
+        type: SET_DISPLAY_PRODUCT,
+        displayProducts: displayProducts.map((product) => ({
+          ...product,
+          currentPrice: (product.price * rate).toFixed(2)
+        }))
+      })
+    }
+    dispatch({ type: '' })
+  }
+}
+
+export function fetchCurrencyRates() {
+  return (dispatch) => {
+    const baseUrl = window.location.origin
+    return axios
+      .get(`${baseUrl}/api/v1/products/currency`)
+      .then(({ data }) => {
+        const rates = { ...data.rates }
+        rates[filterOptions.currency.euro] = 1
+        dispatch({ type: SET_CURRENCY_RATES, rates })
+      })
+      .catch(() => {})
+  }
+}
+
+export function fetchOnLoad() {
+  return (dispatch) => {
+    return dispatch(fetchCurrencyRates()).then(() => dispatch(fetchProducts()))
+  }
 }

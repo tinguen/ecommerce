@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { history } from '../index'
+import addCurrentPrice from '../../components/utils/product'
 
 const initialState = { user: { cart: [] }, isLogged: false, cart: {}, total: 0 }
 const SET_USERNAME = 'SET_USERNAME'
@@ -130,7 +131,7 @@ export function getTotal() {
     // if (!products.length ) return store.product.total
     const getProduct = (id) => products.filter((product) => product.id === id)[0]
     const total = await cart.reduce(async (acc, rec) => {
-      let product = getProduct(rec.productId)
+      let product = addCurrentPrice(getProduct(rec.productId))
       if (!product) {
         const baseUrl = window.location.origin
         try {
@@ -140,9 +141,9 @@ export function getTotal() {
           product = { price: 0 }
         }
       }
-      return (await acc) + product.price * rec.counter
+      return (await acc) + product.currentPrice * rec.counter
     }, Promise.resolve(0))
-    dispatch({ type: SET_TOTAL, total })
+    dispatch({ type: SET_TOTAL, total: total.toFixed(2) })
     return total
   }
 }

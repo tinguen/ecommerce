@@ -53,6 +53,10 @@ async function getById(id) {
   return await Product.findById(id)
 }
 
+async function getByIds(ids) {
+  return await Product.find({ _id: ids })
+}
+
 async function getByUser(id) {
   return await Product.find({
     owner: mongoose.Types.ObjectId(id),
@@ -129,5 +133,6 @@ module.exports = {
   getByCategory,
   getByCategories,
   getByUser,
-  getAllAndFromOrders
+  getAllAndFromOrders,
+  getByIds
 }

@@ -6,7 +6,7 @@ const { Schema } = mongoose
 const schema = new Schema({
   title: { type: String, required: true },
   category: { type: String, required: true },
-  currency: { type: String, default: 'UAH', required: true },
+  // currency: { type: String, default: 'UAH', required: true },
   imageId: {
     type: mongoose.Types.ObjectId
   },

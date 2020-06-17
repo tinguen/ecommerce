@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import Order from './order'
 import Product from './product'
 import history from '../../redux/history'
+import addCurrentPrice from '../utils/product'
 
 const Profile = (props) => {
   const { product } = props
@@ -15,7 +16,7 @@ const Profile = (props) => {
   const baseUrl = window.location.origin
 
   useEffect(() => {
-    async function getProducts() {
+    async function fetchProducts() {
       if (!user.id) return
       try {
         const { data } = await axios.get(`${baseUrl}/api/v1/products/all`, {
@@ -26,7 +27,7 @@ const Profile = (props) => {
         history.push('/')
       }
     }
-    async function getOrders() {
+    async function fetchOrders() {
       if (!user.id) return
       try {
         const { data } = await axios.get(`${baseUrl}/api/v1/orders/user/${user.id}`, {
@@ -37,20 +38,20 @@ const Profile = (props) => {
         history.push('/')
       }
     }
-    async function getOwnProducts() {
+    async function fetchOwnProducts() {
       if (!user.id) return
       try {
         const { data } = await axios.get(`${baseUrl}/api/v1/products/user/`, {
           headers: { Authorization: `Bearer ${user.token}` }
         })
-        setOwnProducts(data)
+        setOwnProducts(data.map((p) => addCurrentPrice(p)))
       } catch (er) {
         history.push('/')
       }
     }
-    getProducts()
-    getOrders()
-    getOwnProducts()
+    fetchProducts()
+    fetchOrders()
+    fetchOwnProducts()
   }, [baseUrl, user.id, user.token])
 
   return (

@@ -2,12 +2,11 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { history } from '../redux'
-import { getProducts } from '../redux/reducers/products'
+import { fetchProducts } from '../redux/reducers/products'
 
 const CreateView = () => {
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('')
-  const [currency, setCurrency] = useState('')
   const [price, setPrice] = useState()
   const [description, setDescription] = useState('')
   const firstUpdate = useRef(true)
@@ -23,7 +22,6 @@ const CreateView = () => {
         const obj = {
           title,
           category,
-          currency,
           price,
           description
         }
@@ -46,7 +44,7 @@ const CreateView = () => {
             Authorization: `Bearer ${token}`
           }
         })
-        dispatch(getProducts())
+        dispatch(fetchProducts())
         setErr(false)
         history.push('/')
       } catch (er) {
@@ -98,16 +96,6 @@ const CreateView = () => {
           placeholder="category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-        />
-        <br />
-
-        <label htmlFor="currency">Currency</label>
-        <input
-          className="input-view"
-          name="currency"
-          placeholder="UAH"
-          value={currency}
-          onChange={(e) => setCurrency(e.target.value)}
         />
         <br />
 

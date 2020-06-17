@@ -7,6 +7,7 @@ const Product = (props) => {
   const { product, className = '' } = props
   const dispatch = useDispatch()
   const prdt = useSelector((s) => s.user.user.cart.filter((p) => p.productId === product.id))
+  const currency = useSelector((s) => s.product.currentCurrency)
   const counter = prdt.length ? prdt[0].counter : 0
   const [innerCounter, setInnerCounter] = useState(counter || 0)
   const baseUrl = window.location.origin
@@ -29,7 +30,7 @@ const Product = (props) => {
           <div>{product.title}</div>
           <div>{product.category}</div>
           <div>
-            {product.price} {product.currency}
+            {product.currentPrice} {currency}
           </div>
         </div>
       </div>

@@ -44,7 +44,7 @@ const Product = (props) => {
           <div>{product.title}</div>
           <div>{product.category}</div>
           <div>
-            {product.price} {product.currency}
+            {product.price} {'EUR'}
           </div>
           <div>{product.description}</div>
         </div>

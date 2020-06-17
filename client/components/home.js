@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Head from './head'
@@ -15,6 +15,7 @@ import ThankYou from './thank-you/thank-you'
 import Verify from './verify/verify'
 import Product from './product/product'
 import { getCurrentUser, fetchState } from '../redux/reducers/users'
+import { fetchOnLoad } from '../redux/reducers/products'
 // import wave from '../assets/images/wave.jpg'
 
 const Home = () => {
@@ -22,9 +23,10 @@ const Home = () => {
   const isLogged = useSelector((s) => s.user.isLogged)
   // console.log(user)
   // const user = useSelector((s) => s.user.user)
-  useLayoutEffect(() => {
+  useEffect(() => {
     dispatch(fetchState())
     dispatch(getCurrentUser())
+    dispatch(fetchOnLoad())
   }, [dispatch])
   return (
     <div className="bg-gray-200 min-h-screen">

@@ -97,6 +97,15 @@ function getCurrencyExchange(req, res, next) {
     .catch((err) => next(err))
 }
 
+function getByIds(req, res, next) {
+  if (!req.query || !req.query.id) next(new Error('No id at products path /id'))
+  const ids = req.query.id.split(',')
+  productService
+    .getByIds(ids)
+    .then((products) => (products ? res.json(products) : res.sendStatus(404)))
+    .catch((err) => next(err))
+}
+
 // routes
 router.post('/create', createProduct)
 router.get('/', getAll)
@@ -105,6 +114,7 @@ router.get('/category/:category', getByCategory)
 router.get('/category', getCategories)
 router.post('/category', getByCategories)
 router.get('/currency', getCurrencyExchange)
+router.get('/id', getByIds)
 router.get('/user', getByUserId)
 router.get('/:id', getById)
 router.put('/:id', update)
