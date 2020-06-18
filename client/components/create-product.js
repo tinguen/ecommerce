@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { history } from '../redux'
-import { fetchProducts } from '../redux/reducers/products'
+import { fetchProducts, setDisplayProductsByCategory } from '../redux/reducers/products'
 
 const CreateView = () => {
   const [title, setTitle] = useState('')
@@ -14,6 +14,7 @@ const CreateView = () => {
   const dispatch = useDispatch()
   // const userId = useSelector((s) => s.user.user.id)
   const token = useSelector((s) => s.user.user.token)
+  const storeCategory = useSelector((s) => s.product.filters.category)
   const baseUrl = window.location.origin
   function handleSubmit(e) {
     e.preventDefault()
@@ -47,6 +48,7 @@ const CreateView = () => {
         dispatch(fetchProducts())
         setErr(false)
         history.push('/')
+        dispatch(fetchProducts()).then(() => dispatch(setDisplayProductsByCategory(storeCategory)))
       } catch (er) {
         setErr(true)
       }

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import addCurrentPrice from '../../components/utils/product'
 
 export const filterOptions = {
   category: {
@@ -165,7 +166,7 @@ export function setDisplayProductsByCategory(category) {
     return axios
       .post(`${baseUrl}/api/v1/products/category`, categoryArr)
       .then(({ data }) => {
-        dispatch({ type: SET_DISPLAY_PRODUCT, displayProducts: data })
+        dispatch({ type: SET_DISPLAY_PRODUCT, displayProducts: addCurrentPrice(data) })
         dispatch(setFilter({ ...filters, category }))
         if (!filters.sortBy === filterOptions.sortBy.initial) dispatch(setSortBy(filters.sortBy))
       })
