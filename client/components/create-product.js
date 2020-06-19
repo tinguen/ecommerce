@@ -23,9 +23,9 @@ const CreateView = () => {
         const obj = {
           title,
           category,
-          price,
-          description
+          price
         }
+        if (description) obj.description = description
         const file = document.getElementById('input-files').files
         let data
         if (file.length) {

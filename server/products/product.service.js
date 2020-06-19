@@ -19,6 +19,12 @@ async function getAll() {
   return await Product.find({ isDeleted: false, isChanged: false })
 }
 
+async function getByChunks(page = 1, limit = 10) {
+  return await Product.find({ isDeleted: false, isChanged: false })
+    .skip((page - 1) * limit)
+    .limit(limit)
+}
+
 async function getAllAndFromOrders(userId) {
   const orders = await Order.find({ userId })
   const products = await Product.find({ isDeleted: false, isChanged: false })
@@ -41,8 +47,32 @@ async function getByCategory(category) {
   return await Product.find({ category, isDeleted: false, isChanged: false })
 }
 
+async function getByCategorySize(category) {
+  return await Product.find({ category, isDeleted: false, isChanged: false }).countDocuments()
+}
+
+async function getByCategoryInChunks(category, page = 1, limit = 5) {
+  return await Product.find({ category, isDeleted: false, isChanged: false })
+    .skip((page - 1) * limit)
+    .limit(limit)
+}
+
 async function getByCategories(categories) {
   return await Product.find({ category: categories, isDeleted: false, isChanged: false })
+}
+
+async function getByCategoriesSize(categories) {
+  return await Product.find({
+    category: categories,
+    isDeleted: false,
+    isChanged: false
+  }).countDocuments()
+}
+
+async function getByCategoriesInChunks(categories, page = 1, limit = 5) {
+  return await Product.find({ category: categories, isDeleted: false, isChanged: false })
+    .skip((page - 1) * limit)
+    .limit(limit)
 }
 
 async function getCategories() {
@@ -66,6 +96,18 @@ async function getByUser(id) {
 }
 
 async function create(productParam) {
+  function validURL(str) {
+    const pattern = new RegExp(
+      '^(https?:\\/\\/)?' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$',
+      'i'
+    ) // fragment locator
+    return !!pattern.test(str)
+  }
   // validate
   if (await Product.findOne({ title: productParam.title, isDeleted: false, isChanged: false })) {
     throw `Title "${productParam.title}" is already taken`
@@ -74,6 +116,7 @@ async function create(productParam) {
   productParam.isDeleted = false
   productParam.isChanged = false
   if (productParam.nextId) delete productParam.nextId
+  if (!(productParam.imageUrl && validURL(productParam.imageUrl))) delete productParam.imageUrl
   const product = new Product(productParam)
   if (productParam.imageId) product.imageId = mongoose.Types.ObjectId(productParam.imageId)
 
@@ -123,6 +166,10 @@ async function _delete(id, userId) {
   // }
 }
 
+async function getSize() {
+  return await Product.find({ isDeleted: false, isChanged: false }).countDocuments()
+}
+
 module.exports = {
   getAll,
   getById,
@@ -134,5 +181,11 @@ module.exports = {
   getByCategories,
   getByUser,
   getAllAndFromOrders,
-  getByIds
+  getByIds,
+  getByChunks,
+  getByCategoryInChunks,
+  getByCategoriesInChunks,
+  getSize,
+  getByCategorySize,
+  getByCategoriesSize
 }

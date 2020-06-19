@@ -21,7 +21,9 @@ export const filterOptions = {
     euro: 'EUR',
     dollar: 'USD',
     canadianDollar: 'CAD'
-  }
+  },
+  limit: 10,
+  page: 1
 }
 const initialState = {
   products: [],
@@ -31,7 +33,10 @@ const initialState = {
   filters: {
     category: filterOptions.category.all,
     sortBy: filterOptions.sortBy.initial,
-    sortOrder: []
+    sortOrder: [],
+    limit: 10,
+    page: 1,
+    currentSize: 0
   }
 }
 const SET_PRODUCT = 'SET_PRODUCT'
@@ -40,6 +45,9 @@ const CLEAR_PRODUCT = 'CLEAR_PRODUCT'
 const SET_FILTER = 'SET_FILTER'
 const SET_CURRENCY = 'SET_CURRENCY'
 const SET_CURRENCY_RATES = 'SET_CURRENCY_RATES'
+const SET_PAGE = 'SET_PAGE'
+const SET_LIMIT = 'SET_LIMIT'
+const SET_CURRENT_SIZE = 'SET_CURRENT_SIZE'
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PRODUCT: {
@@ -63,6 +71,15 @@ export default (state = initialState, action) => {
     case SET_CURRENCY_RATES: {
       return { ...state, rates: action.rates }
     }
+    case SET_PAGE: {
+      return { ...state, filters: { ...state.filters, page: action.page } }
+    }
+    case SET_LIMIT: {
+      return { ...state, filters: { ...state.filters, limit: action.limit } }
+    }
+    case SET_CURRENT_SIZE: {
+      return { ...state, filters: { ...state.filters, currentSize: action.currentSize } }
+    }
     default:
       return state
   }
@@ -72,13 +89,32 @@ export function updateProducts(products) {
   return { type: SET_PRODUCT, products }
 }
 
+export function fetchCurrentSize() {
+  return (dispatch, getState) => {
+    const { category } = getState().product.filters
+    const baseUrl = window.location.origin
+    if (category === filterOptions.category.all) {
+      return axios
+        .get(`${baseUrl}/api/v1/products/size`)
+        .then(({ data }) => dispatch({ type: SET_CURRENT_SIZE, currentSize: data.size }))
+        .catch(() => {})
+    }
+    return axios
+      .get(`${baseUrl}/api/v1/products/category/${category}/size`)
+      .then(({ data }) => dispatch({ type: SET_CURRENT_SIZE, currentSize: data.size }))
+      .catch(() => {})
+  }
+}
+
 export function fetchProducts() {
   return (dispatch, getState) => {
     const baseUrl = window.location.origin
     const rate = getState().product.rates[getState().product.currentCurrency]
+    const { limit } = getState().product.filters
+    const { page } = getState().product.filters
     return axios
-      .get(`${baseUrl}/api/v1/products`)
-      .then(({ data }) =>
+      .get(`${baseUrl}/api/v1/products/chunks`, { params: { limit, page } })
+      .then(({ data }) => {
         dispatch({
           type: SET_PRODUCT,
           products: data.map((product) => ({
@@ -86,7 +122,8 @@ export function fetchProducts() {
             currentPrice: (product.price * rate).toFixed(2)
           }))
         })
-      )
+        dispatch(fetchCurrentSize())
+      })
       .catch(() => {})
   }
 }
@@ -163,11 +200,19 @@ export function setDisplayProductsByCategory(category) {
     if (!Array.isArray(category)) categoryArr = [category]
     else categoryArr = category
     const baseUrl = window.location.origin
+    const categories = categoryArr
+      .reduce((acc, rec) => {
+        return `${acc}${rec},`
+      }, '')
+      .slice(0, -1)
+    const { limit } = getState().product.filters
+    const { page } = getState().product.filters
     return axios
-      .post(`${baseUrl}/api/v1/products/category`, categoryArr)
+      .get(`${baseUrl}/api/v1/products/categories-chunks`, { params: { categories, limit, page } })
       .then(({ data }) => {
         dispatch({ type: SET_DISPLAY_PRODUCT, displayProducts: addCurrentPrice(data) })
         dispatch(setFilter({ ...filters, category }))
+        dispatch(fetchCurrentSize())
         if (!filters.sortBy === filterOptions.sortBy.initial) dispatch(setSortBy(filters.sortBy))
       })
       .catch((err) => console.log(err))
@@ -218,8 +263,25 @@ export function fetchCurrencyRates() {
   }
 }
 
+export function setPage(page) {
+  return (dispatch, getState) => {
+    dispatch({ type: SET_PAGE, page })
+    const { category } = getState().product.filters
+    if (category === filterOptions.category.all) {
+      return dispatch(fetchProducts()).then(() => dispatch(setDisplayProductsByCategory(category)))
+    }
+    return dispatch(setDisplayProductsByCategory(category))
+  }
+}
+
+export function setLimit(limit) {
+  return { type: SET_LIMIT, limit }
+}
+
 export function fetchOnLoad() {
   return (dispatch) => {
-    return dispatch(fetchCurrencyRates()).then(() => dispatch(fetchProducts()))
+    return dispatch(fetchCurrencyRates()).then(() => {
+      dispatch(fetchProducts())
+    })
   }
 }

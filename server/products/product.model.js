@@ -6,18 +6,17 @@ const { Schema } = mongoose
 const schema = new Schema({
   title: { type: String, required: true },
   category: { type: String, required: true },
-  // currency: { type: String, default: 'UAH', required: true },
-  imageId: {
-    type: mongoose.Types.ObjectId
-  },
+  imageId: { type: mongoose.Types.ObjectId },
+  imageUrl: { type: String },
   createdDate: { type: Date, default: Date.now },
   price: { type: Number, required: true },
-  description: { type: String, default: 'No description', required: true },
+  description: { type: String, default: () => 'No description' },
   owner: { type: mongoose.Types.ObjectId, required: true },
   isDeleted: { type: Boolean, default: false, required: true },
   isChanged: { type: Boolean, default: false, required: true },
   nextId: { type: mongoose.Types.ObjectId },
-  stars: { type: Number, default: 0, required: true }
+  stars: { type: Number, default: 0, required: true },
+  testDataId: { type: String, unique: true }
 })
 
 schema.set('toJSON', {

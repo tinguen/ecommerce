@@ -20,7 +20,7 @@ const Product = (props) => {
   return (
     <div
       className={classNames(
-        'card flex flex-col justify-between w-full h-full hover:shadow-2xl bg-gray-200',
+        'card flex flex-col justify-between w-full hover:shadow-2xl bg-gray-200',
         className
       )}
     >

@@ -37,9 +37,61 @@ function getByCategory(req, res, next) {
     .catch((err) => next(err))
 }
 
-function getByCategories(req, res, next) {
+function getByCategoryInChunks(req, res, next) {
+  let page = 1
+  let limit = 5
+  if (req.query.page) {
+    try {
+      page = parseInt(req.query.page, 10)
+    } catch (e) {
+      next(new Error('Invalid page param at /category-chunk'))
+    }
+  }
+  if (req.query.limit) {
+    try {
+      limit = parseInt(req.query.limit, 10)
+    } catch (e) {
+      next(new Error('Invalid limit param at /category-chunk'))
+    }
+  }
   productService
-    .getByCategory(req.body)
+    .getByCategoryInChunks(req.params.category, page, limit)
+    .then((products) => res.json(products))
+    .catch((err) => next(err))
+}
+
+function getByCategories(req, res, next) {
+  if (!req.query || !req.query.categories)
+    next(new Error('No categories at products path /categories'))
+  const categories = req.query.categories.split(',')
+  productService
+    .getByCategory(categories)
+    .then((products) => res.json(products))
+    .catch((err) => next(err))
+}
+
+function getByCategoriesInChunks(req, res, next) {
+  if (!req.query || !req.query.categories)
+    next(new Error('No categories at products path /categories'))
+  const categories = req.query.categories.split(',')
+  let page = 1
+  let limit = 5
+  if (req.query.page) {
+    try {
+      page = parseInt(req.query.page, 10)
+    } catch (e) {
+      next(new Error('Invalid page param at /category-chunk'))
+    }
+  }
+  if (req.query.limit) {
+    try {
+      limit = parseInt(req.query.limit, 10)
+    } catch (e) {
+      next(new Error('Invalid limit param at /category-chunk'))
+    }
+  }
+  productService
+    .getByCategoriesInChunks(categories, page, limit)
     .then((products) => res.json(products))
     .catch((err) => next(err))
 }
@@ -106,13 +158,68 @@ function getByIds(req, res, next) {
     .catch((err) => next(err))
 }
 
+function getByChunks(req, res, next) {
+  // if (!req.query || !req.query.id) next(new Error('No id at products path /id'))
+  // const ids = req.query.id.split(',')
+  let page = 1
+  let limit = 5
+  if (req.query.page) {
+    try {
+      page = parseInt(req.query.page, 10)
+    } catch (e) {
+      next(new Error('Invalid page param at /chunks'))
+    }
+  }
+  if (req.query.limit) {
+    try {
+      limit = parseInt(req.query.limit, 10)
+    } catch (e) {
+      next(new Error('Invalid limit param at /chunks'))
+    }
+  }
+  productService
+    .getByChunks(page, limit)
+    .then((products) => (products ? res.json(products) : res.sendStatus(404)))
+    .catch((err) => next(err))
+}
+
+function getSize(req, res, next) {
+  productService
+    .getSize()
+    .then((size) => res.json({ size }))
+    .catch((err) => next(err))
+}
+
+function getByCategorySize(req, res, next) {
+  productService
+    .getByCategorySize(req.params.category)
+    .then((size) => res.json({ size }))
+    .catch((err) => next(err))
+}
+
+function getCategoriesSize(req, res, next) {
+  if (!req.query || !req.query.categories)
+    next(new Error('No categories at products path /categories'))
+  const categories = req.query.categories.split(',')
+  productService
+    .getByCategoriesSize(categories)
+    .then((size) => res.json({ size }))
+    .catch((err) => next(err))
+}
+
 // routes
 router.post('/create', createProduct)
 router.get('/', getAll)
 router.get('/all', getAllAndFromOrders)
+router.get('/chunks', getByChunks)
+router.get('/size', getSize)
 router.get('/category/:category', getByCategory)
+router.get('/category/:category/size', getByCategorySize)
+router.get('/category-chunks/:category', getByCategoryInChunks)
 router.get('/category', getCategories)
-router.post('/category', getByCategories)
+router.get('/categories', getByCategories)
+router.get('/categories/size', getCategoriesSize)
+router.get('/categories-chunks', getByCategoriesInChunks)
 router.get('/currency', getCurrencyExchange)
 router.get('/id', getByIds)
 router.get('/user', getByUserId)
