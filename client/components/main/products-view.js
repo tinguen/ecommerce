@@ -12,6 +12,7 @@ const ProductView = () => {
   const token = useSelector((s) => s.user.user.token)
   const cart = useSelector((s) => s.user.user.cart)
   const size = useSelector((s) => s.product.filters.currentSize)
+  const page = useSelector((s) => s.product.filters.page)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -64,6 +65,7 @@ const ProductView = () => {
           activeLinkClassName="bg-gray-400 rounded-lg p-1"
           previousLinkClassName="focus:outline-none"
           nextLinkClassName="focus:outline-none"
+          forcePage={page - 1}
           onPageChange={(v) => dispatch(setPage(v.selected + 1))}
         />
       </div>

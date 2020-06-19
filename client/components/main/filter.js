@@ -2,11 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { createPopper } from '@popperjs/core'
-import {
-  setDisplayProductsByCategory,
-  setSortBy,
-  filterOptions
-} from '../../redux/reducers/products'
+import { setProductsByCategory, setSortBy, filterOptions } from '../../redux/reducers/products'
 
 const FilterView = () => {
   const [categories, setCategories] = useState([])
@@ -36,7 +32,7 @@ const FilterView = () => {
   }
 
   function onClick(e) {
-    dispatch(setDisplayProductsByCategory(e.target.innerHTML))
+    dispatch(setProductsByCategory(e.target.innerHTML))
   }
 
   return (
@@ -132,7 +128,7 @@ const FilterView = () => {
             <button
               type="button"
               onClick={() => {
-                dispatch(setDisplayProductsByCategory(filterOptions.category.all))
+                dispatch(setProductsByCategory(filterOptions.category.all))
               }}
               className="hover:underline focus:outline-none"
             >

@@ -195,6 +195,8 @@ export function setDisplayProductsByCategory(category) {
       dispatch({ type: SET_DISPLAY_PRODUCT, displayProducts: products })
       dispatch(setSortBy(filters.sortBy))
       dispatch(setFilter({ ...filters, category }))
+      dispatch(fetchCurrentSize())
+      // dispatch(dispatch({ type: SET_PAGE, page: 1 }))
       return products.slice()
     }
     if (!Array.isArray(category)) categoryArr = [category]
@@ -207,6 +209,7 @@ export function setDisplayProductsByCategory(category) {
       .slice(0, -1)
     const { limit } = getState().product.filters
     const { page } = getState().product.filters
+    dispatch(dispatch({ type: SET_PAGE, page: 1 }))
     return axios
       .get(`${baseUrl}/api/v1/products/categories-chunks`, { params: { categories, limit, page } })
       .then(({ data }) => {
@@ -216,6 +219,13 @@ export function setDisplayProductsByCategory(category) {
         if (!filters.sortBy === filterOptions.sortBy.initial) dispatch(setSortBy(filters.sortBy))
       })
       .catch((err) => console.log(err))
+  }
+}
+
+export function setProductsByCategory(category) {
+  return (dispatch) => {
+    dispatch({ type: SET_PAGE, page: 1 })
+    dispatch(setDisplayProductsByCategory(category))
   }
 }
 
