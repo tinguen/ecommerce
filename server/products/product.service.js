@@ -3,13 +3,7 @@
 /* eslint-disable no-throw-literal */
 /* eslint-disable consistent-return */
 /* eslint-disable no-return-await */
-// import config from '../config'
-
-// const jwt = require('jsonwebtoken')
-// const bcrypt = require('bcryptjs')
 import mongoose from 'mongoose'
-
-// const img = require('../images/images.controller')
 
 const db = require('../_helpers/db')
 
@@ -110,7 +104,7 @@ async function create(productParam) {
   }
   // validate
   if (await Product.findOne({ title: productParam.title, isDeleted: false, isChanged: false })) {
-    throw `Title "${productParam.title}" is already taken`
+    throw new Error(`Title "${productParam.title}" is already taken`)
   }
 
   productParam.isDeleted = false
@@ -121,6 +115,9 @@ async function create(productParam) {
   if (productParam.imageId) product.imageId = mongoose.Types.ObjectId(productParam.imageId)
 
   // save user
+  if (await Product.findOne({ title: productParam.title, isDeleted: false, isChanged: false })) {
+    throw new Error(`Title "${productParam.title}" is already taken`)
+  }
   await product.save()
   return product
 }
@@ -129,12 +126,12 @@ async function update(id, productParam) {
   const product = await Product.findById(id)
 
   // validate
-  if (!product) throw 'Product not found'
+  if (!product) throw new Error('Product not found')
   if (
     product.title !== productParam.title &&
     (await Product.findOne({ title: productParam.title, isDeleted: false, isChanged: false }))
   ) {
-    throw `Title "${productParam.title}" is already taken`
+    throw new Error(`Title "${productParam.title}" is already taken`)
   }
   const p = { ...product, ...productParam }
   const newProduct = create(p)

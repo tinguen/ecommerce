@@ -12,6 +12,9 @@ const Product = (props) => {
   const counter = prdt.length ? prdt[0].counter : 0
   const [innerCounter, setInnerCounter] = useState(counter || 0)
   const baseUrl = window.location.origin
+  const imageUrl = product.imageId
+    ? `${baseUrl}/api/v1/images/${product.imageId}`
+    : product.imageUrl
 
   useEffect(() => {
     setInnerCounter(counter || 0)
@@ -27,9 +30,7 @@ const Product = (props) => {
       <div className="w-full h-0 pt-full relative">
         <img
           alt="Product img"
-          src={
-            product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : 'images/noimage.png'
-          }
+          src={imageUrl || 'images/noimage.png'}
           className="w-full h-full object-cover absolute top-0 left-0"
         />
       </div>

@@ -41,7 +41,7 @@ async function getById(id) {
 async function create(userParam) {
   // validate
   if (await User.findOne({ username: userParam.username })) {
-    throw `Username "${userParam.username}" is already taken`
+    throw new Error(`Username "${userParam.username}" is already taken`)
   }
 
   // if (await User.findOne({ username: userParam.username })) {
@@ -85,12 +85,12 @@ async function update(id, userParam) {
   const user = await User.findById(id)
 
   // validate
-  if (!user) throw 'User not found'
+  if (!user) throw new Error('User not found')
   if (
     user.username !== userParam.username &&
     (await User.findOne({ username: userParam.username }))
   ) {
-    throw `Username "${userParam.username}" is already taken`
+    throw new Error(`Username "${userParam.username}" is already taken`)
   }
 
   // hash password if it was entered
@@ -103,15 +103,6 @@ async function update(id, userParam) {
 
   // copy userParam properties to user
   Object.assign(user, userParam)
-  // if (userParam.cart) user.push(userParam.cart)
-  // user.cart.push('a')
-  // if (userParam.cart) {
-  //   if (Array.isArray(userParam.cart)) {
-  //     user.pushAll(userParam.cart)
-  //   } else {
-  //     user.push(userParam.cart)
-  //   }
-  // }
 
   await user.save()
 }

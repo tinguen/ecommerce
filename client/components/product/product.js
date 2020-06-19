@@ -27,8 +27,11 @@ const Product = (props) => {
   const [errMsg, setErrMsg] = useState('Empty firstname or lastname')
   const [err, setErr] = useState(false)
   const dispatch = useDispatch()
-  //   const user = useSelector((s) => s.user.user)
   const baseUrl = window.location.origin
+  const imageUrl = product.imageId
+    ? `${baseUrl}/api/v1/images/${product.imageId}`
+    : product.imageUrl
+  //   const user = useSelector((s) => s.user.user)
   const fetchReviews = useCallback(
     async function _fetchReviews() {
       try {
@@ -109,11 +112,7 @@ const Product = (props) => {
           <div className="w-full h-0 pt-full mt-4 mb-4 sm:m-0 relative sm:h-48 sm:w-48 sm:pt-0 sm:block">
             <img
               alt="Star img"
-              src={
-                product.imageId
-                  ? `${baseUrl}/api/v1/images/${product.imageId}`
-                  : `${baseUrl}/images/noimage.png`
-              }
+              src={imageUrl || `${baseUrl}/images/noimage.png`}
               className="w-full h-full absolute sm:w-48 sm:h-48 object-cover sm:mt-0 sm:block top-0 left-0"
             />
           </div>

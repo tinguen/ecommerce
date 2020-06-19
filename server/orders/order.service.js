@@ -57,7 +57,7 @@ async function update(id, orderParam) {
   const order = await Order.findById(id)
 
   // validate
-  if (!order) throw 'Order not found'
+  if (!order) throw new Error('Order not found')
 
   Object.assign(order, orderParam)
   await order.save()

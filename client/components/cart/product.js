@@ -11,6 +11,9 @@ const Product = (props) => {
   const counter = prdt.length ? prdt[0].counter : 0
   const [innerCounter, setInnerCounter] = useState(counter || 0)
   const baseUrl = window.location.origin
+  const imageUrl = product.imageId
+    ? `${baseUrl}/api/v1/images/${product.imageId}`
+    : product.imageUrl
 
   useEffect(() => {
     setInnerCounter(counter || 0)
@@ -21,9 +24,7 @@ const Product = (props) => {
       <div className="flex flex-wrap">
         <img
           alt="Product img"
-          src={
-            product.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : 'images/noimage.png'
-          }
+          src={imageUrl || 'images/noimage.png'}
           className="w-48 h-48 object-cover m-2"
         />
         <div className="m-2">

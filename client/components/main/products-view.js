@@ -38,7 +38,7 @@ const ProductView = () => {
           {products.map((product) => {
             return (
               <Product
-                key={product.title}
+                key={product.id}
                 product={product}
                 className="transform hover:scale-105 m-2 sm:m-0"
               />
