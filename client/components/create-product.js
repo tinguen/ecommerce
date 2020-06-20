@@ -76,7 +76,7 @@ const CreateView = () => {
   }, [err])
 
   return (
-    <div className="card">
+    <div className="card card-margin">
       <form onSubmit={handleSubmit}>
         <h1>Create a new product</h1>
 

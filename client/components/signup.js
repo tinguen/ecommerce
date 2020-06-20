@@ -31,16 +31,8 @@ const RegisterView = () => {
     createUser()
   }
 
-  // useEffect(() => {
-  //   if (firstUpdate.current) {
-  //     firstUpdate.current = false
-  //     return
-  //   }
-  //   if (!err) history.push('/login')
-  // }, [err])
-
   return (
-    <div className="card">
+    <div className="card card-margin">
       <form onSubmit={handleSubmit}>
         <h1>Sign Up For An Account</h1>
 

@@ -5,6 +5,9 @@
 
 @tailwind utilities;
 
+body {
+  background-color: #edf2f7;
+}
 .card {
     @apply p-2 rounded-lg shadow-md bg-white;
 }
