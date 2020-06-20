@@ -64,7 +64,7 @@ const ProductView = () => {
               <Product
                 key={product.id}
                 product={product}
-                className="sm:transform sm:hover:scale-105 m-2 sm:m-0"
+                className="sm:transform sm:hover:scale-105 m-2 sm:m-0 transition duration-150 ease"
               />
             )
           })}

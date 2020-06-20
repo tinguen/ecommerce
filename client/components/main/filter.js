@@ -40,7 +40,7 @@ const FilterView = () => {
       <div className="card m-2 sm:sticky align-flex-start top-25 overflow-y-auto max-h-3/4">
         Sort by
         <button
-          className="text-black text-sm px-3 py-3 outline-none focus:outline-none mr-1 mb-1 bg-white transition-all duration-150 ease"
+          className="text-black outline-none focus:outline-none ml-2 mr-1 mb-1 bg-white transition-all duration-150 ease"
           type="button"
           ref={btnDropdownRef}
           onClick={() => {
@@ -54,7 +54,7 @@ const FilterView = () => {
           ref={popoverDropdownRef}
           className={`${
             dropdownShow ? 'block ' : 'hidden '
-          } bg-white text-sm z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 p-1`}
+          } bg-white text-sm z-50 float-left py-2 list-none text-left rounded mt-1 p-1 border-solid border-2`}
         >
           <li>
             <button

@@ -43,11 +43,19 @@ body {
 }
 
 .button {
-  @apply bg-black rounded-lg px-4 py-2 m-2 box-border text-white
+  @apply bg-black rounded-lg px-4 py-2 m-2 box-border text-white;
+}
+
+.button:focus {
+  @apply outline-none;
 }
 
 .input-view {
   @apply flex-auto m-2 p-2 bg-gray-200 border-solid border-2 border-gray-300 rounded-lg min-w-0;
+}
+
+.input-view:focus {
+  @apply outline-none;
 }
 
 .justify-g-center {
