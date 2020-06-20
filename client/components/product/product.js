@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import Rating from 'react-rating'
 import { addToCart, removeFromCart, setCounterCart } from '../../redux/reducers/users'
+import { fetchCurrencyRates } from '../../redux/reducers/products'
 import Review from './review'
 import history from '../../redux/history'
 import addCurrentPrice from '../utils/product'
@@ -53,9 +54,9 @@ const Product = (props) => {
         history.push('/')
       }
     }
-    fetchProduct()
+    dispatch(fetchCurrencyRates()).then(() => fetchProduct())
     fetchReviews()
-  }, [baseUrl, fetchReviews, id, currency])
+  }, [baseUrl, fetchReviews, id, currency, dispatch])
   useEffect(() => {
     setInnerCounter(counter || 0)
   }, [counter])

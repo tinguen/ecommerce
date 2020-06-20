@@ -131,7 +131,7 @@ export function getTotal() {
     // if (!products.length ) return store.product.total
     const getProduct = (id) => products.filter((product) => product.id === id)[0]
     const total = await cart.reduce(async (acc, rec) => {
-      let product = addCurrentPrice(getProduct(rec.productId))
+      let product = getProduct(rec.productId)
       if (!product) {
         const baseUrl = window.location.origin
         try {
@@ -141,6 +141,7 @@ export function getTotal() {
           product = { price: 0 }
         }
       }
+      product = addCurrentPrice(product)
       return (await acc) + product.currentPrice * rec.counter
     }, Promise.resolve(0))
     dispatch({ type: SET_TOTAL, total: total.toFixed(2) })

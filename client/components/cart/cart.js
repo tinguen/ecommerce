@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { getTotal, clearCart } from '../../redux/reducers/users'
+import { fetchCurrencyRates } from '../../redux/reducers/products'
 import Product from './product'
 import { history } from '../../redux'
 import addCurrentPrice from '../utils/product'
@@ -19,7 +20,6 @@ const CartView = () => {
 
   useEffect(() => {
     // if (!products.length && !cart.length) return
-    dispatch(getTotal())
     async function fetchCartProducts() {
       const baseUrl = window.location.origin
       const ids = cart
@@ -37,7 +37,11 @@ const CartView = () => {
         // history.push('/')
       }
     }
-    fetchCartProducts()
+    dispatch(fetchCurrencyRates()).then(() => {
+      fetchCartProducts()
+      dispatch(getTotal())
+    })
+    // fetchCartProducts()
   }, [cart, dispatch, products])
 
   useEffect(() => {
