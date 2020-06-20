@@ -89,7 +89,7 @@ const Header = (props) => {
         ) : (
           ''
         )}
-        <span className="relative">
+        <span className="">
           <button
             type="button"
             onClick={() => {
@@ -99,7 +99,7 @@ const Header = (props) => {
           >
             <span className="relative">
               Cart
-              <div className="absolute text-xs text-center align-middle w-3 h-4 rounded-full bg-red-600 text-white -top-2 -right-3">
+              <div className="absolute text-xs text-center align-middle pl-1 pr-1 rounded-full bg-red-600 text-white -top-2 -right-4 shadow">
                 {cart.length}
               </div>
             </span>

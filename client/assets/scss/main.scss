@@ -5,8 +5,14 @@
 
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+
+}
+
 body {
   background-color: #edf2f7;
+  box-sizing: border-box;
 }
 .card {
     @apply p-2 rounded-lg shadow-md bg-white;
@@ -41,7 +47,7 @@ body {
 }
 
 .input-view {
-  @apply flex-grow m-2 p-2 bg-gray-200 border-solid border-2 border-gray-300 rounded-lg;
+  @apply flex-auto m-2 p-2 bg-gray-200 border-solid border-2 border-gray-300 rounded-lg min-w-0;
 }
 
 .justify-g-center {

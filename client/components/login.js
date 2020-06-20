@@ -40,11 +40,11 @@ const LoginView = () => {
 
   return (
     <div className="flex flex-auto justify-center items-center">
-      <div className="card">
+      <div className="card card-margin overflow-auto">
         <form onSubmit={handleSubmit} className="flex flex-col">
           <h1 className="self-center">Login</h1>
           <input
-            className="input-view flex-auto"
+            className="input-view"
             name="username"
             placeholder="Username"
             value={username}

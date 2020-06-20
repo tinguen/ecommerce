@@ -39,7 +39,7 @@ const Product = (props) => {
         <button
           type="submit"
           // className={`button ${!counter ? 'absolute opacity-0 -z-10' : ''}`}
-          className="m-2"
+          className="m-2 p-2 h-auto rounded-lg bg-red-300 hover:bg-red-400 outline-none border-none w-8 h-8 text-center focus:outline-none"
           onClick={() => {
             dispatch(removeFromCart(product.id))
           }}
@@ -47,7 +47,7 @@ const Product = (props) => {
           -
         </button>
         <input
-          className="rounded-lg p-2 mt-2 mb-2 border-solid border-2 border-gray-300 w-8 h-8 outline-none flex-auto text-xs text-center"
+          className="rounded-lg p-2 mt-2 mb-2 border-solid border-2 border-gray-300 w-8 outline-none focus:outline-none flex-auto text-xs text-center"
           name="counter"
           maxLength="2"
           value={innerCounter}
@@ -61,7 +61,7 @@ const Product = (props) => {
         />
         <button
           type="submit"
-          className="m-2"
+          className="m-2 p-2 h-auto rounded-lg bg-green-300 hover:bg-green-400 outline-none border-none w-8 h-8 text-center focus:outline-none"
           onClick={() => {
             dispatch(addToCart(product.id))
           }}

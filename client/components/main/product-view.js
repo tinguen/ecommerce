@@ -27,14 +27,14 @@ const Product = (props) => {
         className
       )}
     >
-      <div className="w-full h-0 pt-full relative">
-        <img
-          alt="Product img"
-          src={imageUrl || 'images/noimage.png'}
-          className="w-full h-full object-cover absolute top-0 left-0"
-        />
-      </div>
-      <div className="">
+      <div>
+        <div className="w-full h-0 pt-full relative">
+          <img
+            alt="Product img"
+            src={imageUrl || 'images/noimage.png'}
+            className="w-full h-full object-cover absolute top-0 left-0"
+          />
+        </div>
         <div className="m-2">
           <div>
             <Link to={`/product/${product.id}`} className="hover:underline">
@@ -55,40 +55,40 @@ const Product = (props) => {
             />
           </div>
         </div>
-        <div className="flex items-center justify-center">
-          <button
-            type="submit"
-            // className={`button ${!counter ? 'absolute opacity-0 -z-10' : ''}`}
-            className="m-2 p-2 h-auto rounded-lg bg-red-300 hover:bg-red-400 outline-none border-none w-8 h-8 text-center"
-            onClick={() => {
-              dispatch(removeFromCart(product.id))
-            }}
-          >
-            -
-          </button>
-          <input
-            className="w-8 rounded-lg p-2 mt-2 mb-2 border-solid border-2 border-gray-300 outline-none text-xs text-center"
-            name="counter"
-            maxLength="2"
-            value={innerCounter}
-            onChange={(e) => setInnerCounter(e.target.value)}
-            onBlur={(e) => {
-              const diff = parseInt(e.target.value, 10) - (counter || 0)
-              // eslint-disable-next-line no-self-compare
-              if (!(typeof diff === 'number' && diff === diff)) return
-              dispatch(setCounterCart(product.id, e.target.value))
-            }}
-          />
-          <button
-            type="button"
-            className="m-2 p-2 h-auto rounded-lg bg-green-300 hover:bg-green-400 outline-none border-none w-8 h-8 text-center"
-            onClick={() => {
-              dispatch(addToCart(product.id))
-            }}
-          >
-            +
-          </button>
-        </div>
+      </div>
+      <div className="flex items-center justify-center">
+        <button
+          type="submit"
+          // className={`button ${!counter ? 'absolute opacity-0 -z-10' : ''}`}
+          className="m-2 p-2 h-auto rounded-lg bg-red-300 hover:bg-red-400 outline-none border-none w-8 h-8 text-center focus:outline-none"
+          onClick={() => {
+            dispatch(removeFromCart(product.id))
+          }}
+        >
+          -
+        </button>
+        <input
+          className="w-8 rounded-lg p-2 mt-2 mb-2 border-solid border-2 border-gray-300 outline-none text-xs text-center focus:outline-none"
+          name="counter"
+          maxLength="2"
+          value={innerCounter}
+          onChange={(e) => setInnerCounter(e.target.value)}
+          onBlur={(e) => {
+            const diff = parseInt(e.target.value, 10) - (counter || 0)
+            // eslint-disable-next-line no-self-compare
+            if (!(typeof diff === 'number' && diff === diff)) return
+            dispatch(setCounterCart(product.id, e.target.value))
+          }}
+        />
+        <button
+          type="button"
+          className="m-2 p-2 h-auto rounded-lg bg-green-300 hover:bg-green-400 outline-none border-none w-8 h-8 text-center focus:outline-none"
+          onClick={() => {
+            dispatch(addToCart(product.id))
+          }}
+        >
+          +
+        </button>
       </div>
     </div>
   )

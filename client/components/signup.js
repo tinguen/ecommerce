@@ -32,67 +32,74 @@ const RegisterView = () => {
   }
 
   return (
-    <div className="card card-margin">
-      <form onSubmit={handleSubmit}>
-        <h1>Sign Up For An Account</h1>
+    <div className="flex flex-auto justify-center items-center">
+      <div className="card card-margin overflow-auto">
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          <h1>Sign Up For An Account</h1>
 
-        <label htmlFor="email">Email</label>
-        <input
-          className="input-view"
-          name="email"
-          placeholder="example@example.com"
-          value={email}
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
+          <label htmlFor="email" className="ml-2">
+            Email
+          </label>
+          <input
+            className="input-view"
+            name="email"
+            placeholder="example@example.com"
+            value={email}
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <label htmlFor="username">Username</label>
-        <input
-          className="input-view"
-          name="username"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <br />
+          <label htmlFor="username" className="ml-2">
+            Username
+          </label>
+          <input
+            className="input-view"
+            name="username"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-        <label htmlFor="password">Password</label>
-        <input
-          className="input-view"
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
+          <label htmlFor="password" className="ml-2">
+            Password
+          </label>
+          <input
+            className="input-view"
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <label htmlFor="firstname">First Name</label>
-        <input
-          className="input-view"
-          name="firstname"
-          placeholder="Tin"
-          value={firstname}
-          onChange={(e) => setFirstname(e.target.value)}
-        />
-        <br />
+          <label htmlFor="firstname" className="ml-2">
+            First Name
+          </label>
+          <input
+            className="input-view"
+            name="firstname"
+            placeholder="Tin"
+            value={firstname}
+            onChange={(e) => setFirstname(e.target.value)}
+          />
 
-        <label htmlFor="lastname">Last Name</label>
-        <input
-          className="input-view"
-          name="lastname"
-          placeholder="Nhuen"
-          value={lastname}
-          onChange={(e) => setLastname(e.target.value)}
-        />
-        <br />
+          <label htmlFor="lastname" className="ml-2">
+            Last Name
+          </label>
+          <input
+            className="input-view"
+            name="lastname"
+            placeholder="Nhuen"
+            value={lastname}
+            onChange={(e) => setLastname(e.target.value)}
+          />
 
-        <button type="submit" id="search-button" className="button">
-          Sign up
-        </button>
-      </form>
-      <div className="text-red-800">{err ? 'Username is taken' : ''}</div>
+          <button type="submit" id="search-button" className="button">
+            Sign up
+          </button>
+        </form>
+        <div className="text-red-800">{err ? 'Username is taken' : ''}</div>
+      </div>
     </div>
   )
 }

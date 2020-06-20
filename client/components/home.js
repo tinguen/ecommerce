@@ -15,7 +15,7 @@ import ThankYou from './thank-you/thank-you'
 import Verify from './verify/verify'
 import Product from './product/product'
 import { getCurrentUser, fetchState } from '../redux/reducers/users'
-import { fetchOnLoad } from '../redux/reducers/products'
+import { fetchOnLoad, setLimit } from '../redux/reducers/products'
 // import wave from '../assets/images/wave.jpg'
 
 const Home = () => {
@@ -24,10 +24,15 @@ const Home = () => {
   // console.log(user)
   // const user = useSelector((s) => s.user.user)
   useEffect(() => {
+    let limit = 10
+    const width = window.innerWidth
+    if (width > 640) limit = 12
+    dispatch(setLimit(limit))
     dispatch(fetchState())
     dispatch(getCurrentUser())
     dispatch(fetchOnLoad())
   }, [dispatch])
+
   return (
     <div className="bg-gray-200 min-h-screen">
       <Head title="Home" />
