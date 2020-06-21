@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import { updateUsername } from '../redux/reducers/users'
 import { history } from '../redux'
 
 const LoginView = () => {
+  const { t, i18n } = useTranslation()
+  const [translation, setTranslation] = useState(t('login', { returnObjects: true }))
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [err, setErr] = useState(false)
@@ -13,6 +16,10 @@ const LoginView = () => {
   const dispatch = useDispatch()
   const user = useSelector((s) => s.user.user)
   const location = useLocation()
+
+  useEffect(() => {
+    setTranslation(t('login', { returnObjects: true }))
+  }, [t, i18n.language])
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -42,11 +49,11 @@ const LoginView = () => {
     <div className="flex flex-auto justify-center items-center">
       <div className="card card-margin overflow-auto">
         <form onSubmit={handleSubmit} className="flex flex-col">
-          <h1 className="self-center">Login</h1>
+          <h1 className="self-center">{translation.title}</h1>
           <input
             className="input-view"
             name="username"
-            placeholder="Username"
+            placeholder={translation.username}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -54,7 +61,7 @@ const LoginView = () => {
             className="input-view"
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder={translation.password}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -67,15 +74,15 @@ const LoginView = () => {
                 onChange={() => setRememberMe(!rememberMe)}
               />
               <label htmlFor="remember-me" className="m-2 cursor-pointer text-sm">
-                Remember me
+                {translation.rememberMe}
               </label>
             </div>
             <Link to="/signup" className="text-sm hover:underline self-center">
-              Signup
+              {translation.signUp}
             </Link>
           </div>
           <button type="submit" id="search-button" className="button block">
-            Login
+            {translation.btn}
           </button>
           <div className="text-red-800">{err ? 'Wrong username or password' : ''}</div>
           <div>{user.firstName ? `Hello, ${user.firstName}` : ''}</div>

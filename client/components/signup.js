@@ -1,15 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 import { history } from '../redux'
 
 const RegisterView = () => {
+  const { t, i18n } = useTranslation()
+  const [translation, setTranslation] = useState(t('signUp', { returnObjects: true }))
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [lastname, setLastname] = useState('')
   const [firstname, setFirstname] = useState('')
   const [password, setPassword] = useState('')
-  // const firstUpdate = useRef(true)
   const [err, setErr] = useState(false)
+
+  useEffect(() => {
+    setTranslation(t('signUp', { returnObjects: true }))
+  }, [t, i18n.language])
+
   function handleSubmit(e) {
     e.preventDefault()
     async function createUser() {
@@ -35,10 +42,10 @@ const RegisterView = () => {
     <div className="flex flex-auto justify-center items-center">
       <div className="card card-margin overflow-auto">
         <form onSubmit={handleSubmit} className="flex flex-col">
-          <h1>Sign Up For An Account</h1>
+          <h1>{translation.title}</h1>
 
           <label htmlFor="email" className="ml-2">
-            Email
+            {translation.email}
           </label>
           <input
             className="input-view"
@@ -50,30 +57,30 @@ const RegisterView = () => {
           />
 
           <label htmlFor="username" className="ml-2">
-            Username
+            {translation.username}
           </label>
           <input
             className="input-view"
             name="username"
-            placeholder="Username"
+            placeholder={translation.username}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
 
           <label htmlFor="password" className="ml-2">
-            Password
+            {translation.password}
           </label>
           <input
             className="input-view"
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder={translation.password}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
           <label htmlFor="firstname" className="ml-2">
-            First Name
+            {translation.firstName}
           </label>
           <input
             className="input-view"
@@ -84,7 +91,7 @@ const RegisterView = () => {
           />
 
           <label htmlFor="lastname" className="ml-2">
-            Last Name
+            {translation.lastName}
           </label>
           <input
             className="input-view"
@@ -95,7 +102,7 @@ const RegisterView = () => {
           />
 
           <button type="submit" id="search-button" className="button">
-            Sign up
+            {translation.btn}
           </button>
         </form>
         <div className="text-red-800">{err ? 'Username is taken' : ''}</div>

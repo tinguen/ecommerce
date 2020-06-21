@@ -4,6 +4,8 @@ import classNames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import Rating from 'react-rating'
+import { useTranslation } from 'react-i18next'
+
 import { addToCart, removeFromCart, setCounterCart } from '../../redux/reducers/users'
 import { fetchCurrencyRates } from '../../redux/reducers/products'
 import Review from './review'
@@ -11,6 +13,8 @@ import history from '../../redux/history'
 import addCurrentPrice from '../utils/product'
 
 const Product = (props) => {
+  const { t, i18n } = useTranslation()
+  const [translation, setTranslation] = useState(t('product', { returnObjects: true }))
   const { className = '' } = props
   const { id } = useParams()
   const [product, setProduct] = useState({})
@@ -44,6 +48,10 @@ const Product = (props) => {
     },
     [baseUrl, id]
   )
+
+  useEffect(() => {
+    setTranslation(t('product', { returnObjects: true }))
+  }, [t, i18n.language])
 
   useEffect(() => {
     async function fetchProduct() {
@@ -174,7 +182,7 @@ const Product = (props) => {
             href="#link1"
             role="tablist"
           >
-            Description
+            {translation.description}
           </a>
         </li>
         <li className={`-mb-px mr-2 last:mr-0 flex-auto text-center `}>
@@ -190,7 +198,7 @@ const Product = (props) => {
             href="#link2"
             role="tablist"
           >
-            Reviews
+            {translation.review}
           </a>
         </li>
       </ul>
@@ -199,7 +207,7 @@ const Product = (props) => {
       </div>
       <div className={`${openTab === 2 ? 'block' : 'hidden'} p-2`} id="#link2">
         <div className={`${user.token ? 'block' : 'hidden'}`}>
-          Leave your thoughts:{' '}
+          {translation.reviews.title}:{' '}
           <Rating
             initialRating={stars}
             emptySymbol={
@@ -212,25 +220,25 @@ const Product = (props) => {
             <input
               className="input-view"
               name="firstname"
-              placeholder="First name"
+              placeholder={translation.reviews.firstName}
               value={firstname}
               onChange={(e) => setFirstname(e.target.value)}
             />
             <input
               className="input-view"
               name="lastname"
-              placeholder="Last Name"
+              placeholder={translation.reviews.lastName}
               value={lastname}
               onChange={(e) => setLastname(e.target.value)}
             />
           </div>
           <label htmlFor="description" className="align-top">
-            Description
+            {translation.reviews.description}
           </label>
           <textarea
             className="input-view w-full"
             name="description"
-            placeholder="Description"
+            placeholder={translation.reviews.description}
             value={description}
             rows={5}
             cols={20}
@@ -238,15 +246,15 @@ const Product = (props) => {
           />
           <div className={`${err ? 'block' : 'hidden'} text-red-900`}>{errMsg}</div>
           <button type="button" className="button" onClick={uploadReview}>
-            Post
+            {translation.reviews.btn}
           </button>
         </div>
         <div className={`${user.token ? 'hidden' : 'block'}`}>
-          Please{' '}
+          {translation.loginMsg.please}{' '}
           <Link to="/login" className="hover:underline">
-            login
+            {translation.loginMsg.login}
           </Link>{' '}
-          to leave a review
+          {translation.loginMsg.rest}
         </div>
         {reviews.map((review) => {
           return <Review key={review.id} review={review} />

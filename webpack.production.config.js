@@ -195,6 +195,8 @@ const config = {
           { from: 'assets/images', to: 'images' },
           { from: 'assets/fonts', to: 'fonts' },
 
+          { from: 'assets/locales', to: 'locales' },
+
           { from: 'assets/sitemap.xml', to: 'sitemap.xml' },
           { from: 'assets/manifest.json', to: 'manifest.json' },
           {

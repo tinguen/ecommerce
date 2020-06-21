@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
-import { Switch, Route } from 'react-router-dom'
+// eslint-disable-next-line no-unused-vars
+import { Switch, Route, Redirect, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import Head from './head'
 import Header from './header'
 import RegisterView from './signup'
@@ -19,8 +21,12 @@ import { fetchOnLoad, setLimit } from '../redux/reducers/products'
 // import wave from '../assets/images/wave.jpg'
 
 const Home = () => {
+  const [, i18n] = useTranslation()
+  // console.log(i18n.language)
   const dispatch = useDispatch()
   const isLogged = useSelector((s) => s.user.isLogged)
+  const { language: lng } = useParams()
+  // const baseUrl = window.location.origin
   // console.log(user)
   // const user = useSelector((s) => s.user.user)
   useEffect(() => {
@@ -33,40 +39,77 @@ const Home = () => {
     dispatch(fetchOnLoad())
   }, [dispatch])
 
+  useEffect(() => {
+    console.log(lng)
+    i18n.changeLanguage(lng)
+  }, [i18n, lng])
+
+  const languages = 'en|ru|uk'
+
   return (
     <div className="bg-gray-200 min-h-screen">
       <Head title="Home" />
       <Header />
       <Switch>
         {/* <Route exact path="/" component={() => <ProductView />} /> */}
-        <Route exact path="/">
+        <Route exact path={`/:lng(${languages})`}>
           <ProductView />
         </Route>
-        <PrivateRoute exact path="/profile" isLogged={isLogged} component={() => <Profile />} />
-        <Route exact path="/signup">
+        <Route exact path="/">
+          <Redirect to={`/${i18n.language}`} />
+        </Route>
+        <Route
+          exact
+          path="/:path"
+          render={(props) => <Redirect to={`/${i18n.language}/${props.match.params.path}`} />}
+        />
+        <PrivateRoute
+          exact
+          path={`/:lng(${languages})/profile`}
+          isLogged={isLogged}
+          component={() => <Profile />}
+        />
+        <Route exact path={`/:lng(${languages})/signup`}>
           <RegisterView />
         </Route>
-        <Route exact path="/login">
+        <Route exact path={`/:lng(${languages})/login`}>
           <LoginView />
         </Route>
-        <Route exact path="/create">
-          <CreateView />
-        </Route>
-        <Route exact path="/cart">
+        <PrivateRoute
+          exact
+          path={`/:lng(${languages})/create`}
+          isLogged={isLogged}
+          component={() => <CreateView />}
+        />
+        <Route exact path={`/:lng(${languages})/cart`}>
           <CartView />
         </Route>
-        <Route exact path="/checkout">
+        <Route exact path={`/:lng(${languages})/checkout`}>
           <Checkout />
         </Route>
-        <Route exact path="/thankyou">
+        <Route exact path={`/:lng(${languages})/thankyou`}>
           <ThankYou />
         </Route>
-        <Route exact path="/verify/:token">
+        <Route exact path={`/:lng(${languages})/verify/:token`}>
           <Verify />
         </Route>
-        <Route exact path="/product/:id">
+        <Route exact path={`/:lng(${languages})/product/:id`}>
           <Product />
         </Route>
+        {/* <Route
+          exact
+          path={`/:lng(${languages})/*`}
+          render={(props) => <Redirect to={`${i18n.language}/${props.match.params[0]}`} />}
+        /> */}
+        <Route
+          exact
+          path="/:path/:secondPath"
+          render={(props) => (
+            <Redirect
+              to={`/${i18n.language}/${props.match.params.path}/${props.match.params.secondPath}`}
+            />
+          )}
+        />
       </Switch>
     </div>
   )

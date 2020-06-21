@@ -1,37 +1,44 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import { history } from '../redux'
 import { logout } from '../redux/reducers/users'
 import { setCurrency, filterOptions } from '../redux/reducers/products'
+import { changeLanguage } from '../config/root'
 
 const Header = (props) => {
-  // eslint-disable-next-line no-unused-vars
+  const { t, i18n } = useTranslation()
+  const [translation, setTranslation] = useState(t('header', { returnObjects: true }))
   const {
-    center = { path: '/', title: 'Shop' },
-    middle = { path: '/cart', title: 'Cart' },
-    right = { path: '/logout', title: 'Logout' },
-    left = { path: '/create', title: 'Add new product' }
+    center = { path: '/', title: translation.title },
+    middle = { path: '/cart', title: translation.cart },
+    right = { path: '/logout', title: translation.logout },
+    left = { path: '/profile', title: translation.profile }
   } = props
-  const ref = useRef()
   const [middleLink, setMiddleLink] = useState(middle)
   const [leftLink, setLeftLink] = useState(left)
   const isLogged = useSelector((s) => s.user.isLogged)
   const cart = useSelector((s) => s.user.user.cart)
   const currency = useSelector((s) => s.product.currentCurrency)
   const dispatch = useDispatch()
+  const [languageDropdown, setLanguageDropdown] = useState(false)
   useEffect(() => {
     if (!isLogged) {
-      setMiddleLink({ path: '/signup', title: 'Sign up' })
-      setLeftLink({ path: '/login', title: 'Login' })
+      setMiddleLink({ path: '/signup', title: translation.signUp })
+      setLeftLink({ path: '/login', title: translation.login })
     } else {
       setMiddleLink(middle)
       setLeftLink(left)
     }
-  }, [isLogged])
+  }, [isLogged, translation.login, translation.signUp])
+
+  useEffect(() => {
+    setTranslation(t('header', { returnObjects: true }))
+  }, [t, i18n.language])
 
   return (
-    <header ref={ref} className="bg-white sm:flex p-6 mb-2 shadow sm:sticky sm:top-0 z-10">
+    <header className="bg-white sm:flex p-6 mb-2 shadow sm:sticky sm:top-0 z-10">
       <div className="sm:flex items-center flex-1">
         <div className="">
           <Link to={center.path} className="header-text header-text-border focus:outline-none">
@@ -98,7 +105,7 @@ const Header = (props) => {
             className="header-text header-text-border focus:outline-none"
           >
             <span className="relative">
-              Cart
+              {translation.cart}
               <div className="absolute text-xs text-center align-middle pl-1 pr-1 rounded-full bg-red-600 text-white -top-2 -right-4 shadow">
                 {cart.length}
               </div>
@@ -121,6 +128,60 @@ const Header = (props) => {
         ) : (
           ''
         )}
+        <div className="relative inline-block text-left">
+          <div>
+            <span className="rounded-md shadow-sm">
+              <button
+                type="button"
+                className="inline-flex justify-center w-full rounded-md pr-4 ml-2 py-2 bg-white text-sm leading-5 font-medium focus:outline-none text-gray-700 transition ease-in-out duration-150"
+                id="options-menu"
+                aria-haspopup="true"
+                aria-expanded="true"
+                onClick={() => setLanguageDropdown(!languageDropdown)}
+              >
+                {i18n.language}
+              </button>
+            </span>
+          </div>
+          <div
+            className={`${
+              languageDropdown ? 'block' : 'hidden'
+            } absolute origin-top-right right-0 w-8 rounded-md shadow-lg mt-2`}
+          >
+            <div className="rounded-md bg-white shadow-xs">
+              <button
+                type="button"
+                className="p-1 hover:underline"
+                onClick={() => {
+                  changeLanguage('ru')
+                  setLanguageDropdown(!languageDropdown)
+                }}
+              >
+                ru
+              </button>
+              <button
+                type="button"
+                className="p-1 hover:underline"
+                onClick={() => {
+                  changeLanguage('uk')
+                  setLanguageDropdown(!languageDropdown)
+                }}
+              >
+                uk
+              </button>
+              <button
+                type="button"
+                className="p-1 hover:underline"
+                onClick={() => {
+                  changeLanguage('en')
+                  setLanguageDropdown(!languageDropdown)
+                }}
+              >
+                en
+              </button>
+            </div>
+          </div>
+        </div>
       </nav>
     </header>
   )

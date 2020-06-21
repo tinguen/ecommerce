@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import Order from './order'
 import Product from './product'
 import history from '../../redux/history'
 import addCurrentPrice from '../utils/product'
 
 const Profile = (props) => {
+  const { t, i18n } = useTranslation()
+  const [translation, setTranslation] = useState(t('profile', { returnObjects: true }))
   const { product } = props
   const [orders, setOrders] = useState([])
   const [products, setProducts] = useState([])
@@ -14,6 +18,10 @@ const Profile = (props) => {
   const [openTab, setOpenTab] = useState(1)
   const user = useSelector((s) => s.user.user)
   const baseUrl = window.location.origin
+
+  useEffect(() => {
+    setTranslation(t('profile', { returnObjects: true }))
+  }, [t, i18n.language])
 
   useEffect(() => {
     async function fetchProducts() {
@@ -70,7 +78,7 @@ const Profile = (props) => {
             href="#link1"
             role="tablist"
           >
-            General
+            {translation.general}
           </a>
         </li>
         <li
@@ -90,7 +98,7 @@ const Profile = (props) => {
             href="#link2"
             role="tablist"
           >
-            Orders
+            {translation.orders}
           </a>
         </li>
         <li
@@ -110,7 +118,7 @@ const Profile = (props) => {
             href="#link3"
             role="tablist"
           >
-            Your products
+            {translation.products}
           </a>
         </li>
       </ul>
@@ -119,19 +127,21 @@ const Profile = (props) => {
           <img
             alt="User img"
             src={
-              user.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : 'images/noimage.png'
+              user.imageId ? `${baseUrl}/api/v1/images/${product.imageId}` : '/images/noimage.png'
             }
             className="w-48 h-48 m-2"
           />
           <div className="m-2">
-            <div>Username: {user.username}</div>
             <div>
-              Name: {user.firstName} {user.lastName}
+              {translation.username}: {user.username}
+            </div>
+            <div>
+              {translation.name}: {user.firstName} {user.lastName}
             </div>
           </div>
         </div>
         <div className={`flex flex-col ${openTab === 2 ? 'block' : 'hidden'}`}>
-          Your orders:
+          {translation.ordersMsg}:
           {orders.map((order) => {
             return <Order key={order.id} order={order} products={products} />
           })}
@@ -141,6 +151,9 @@ const Profile = (props) => {
             openTab === 3 && ownProducts.length ? 'block' : 'hidden'
           }`}
         >
+          <Link to="/create">
+            <span className="hover:underline">Add new products</span>
+          </Link>
           <div>{ownProducts.length ? 'Your products:' : ''}</div>
           <div className="flex flex-col">
             {ownProducts.map((p) => {

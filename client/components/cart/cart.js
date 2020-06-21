@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 import { getTotal, clearCart } from '../../redux/reducers/users'
 import { fetchCurrencyRates } from '../../redux/reducers/products'
 import Product from './product'
@@ -8,15 +9,22 @@ import { history } from '../../redux'
 import addCurrentPrice from '../utils/product'
 
 const CartView = () => {
+  const { t, i18n } = useTranslation()
+  const [translation, setTranslation] = useState(t('cart', { returnObjects: true }))
   const dispatch = useDispatch()
   const [cartProducts, setCartProducts] = useState([])
   const userId = useSelector((s) => s.user.user.id)
   const token = useSelector((s) => s.user.user.token)
   const user = useSelector((s) => s.user.user)
   const total = useSelector((s) => s.user.total)
+  const currency = useSelector((s) => s.product.currentCurrency)
   const products = useSelector((s) => s.product.products)
   const isLogged = useSelector((s) => s.user.isLogged)
   const { cart } = user
+
+  useEffect(() => {
+    setTranslation(t('cart', { returnObjects: true }))
+  }, [t, i18n.language])
 
   useEffect(() => {
     // if (!products.length && !cart.length) return
@@ -69,7 +77,7 @@ const CartView = () => {
             dispatch(clearCart())
           }}
         >
-          Clear
+          {translation.clear}
         </button>
         {isLogged ? (
           <button
@@ -80,7 +88,7 @@ const CartView = () => {
               history.push('/checkout')
             }}
           >
-            Checkout
+            {translation.checkout}
           </button>
         ) : (
           ''
@@ -94,7 +102,9 @@ const CartView = () => {
         )
       })}
       <div className="card card-margin">
-        <div className="text-right">Total: {total}</div>
+        <div className="text-right">
+          {translation.total}: {total} {currency}
+        </div>
       </div>
     </div>
   )

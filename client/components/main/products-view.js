@@ -39,12 +39,12 @@ const ProductView = () => {
           previousLabel={
             <img
               alt="Previous img"
-              src="images/previous-arrow.png"
+              src="/images/previous-arrow.png"
               className="w-4 h-4 object-cover"
             />
           }
           nextLabel={
-            <img alt="Next img" src="images/next-arrow.png" className="w-4 h-4 object-cover" />
+            <img alt="Next img" src="/images/next-arrow.png" className="w-4 h-4 object-cover" />
           }
           pageCount={Math.ceil(size / limit)}
           pageRangeDisplayed={3}

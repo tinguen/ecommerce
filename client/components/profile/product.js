@@ -1,17 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import classNames from 'classnames'
 import axios from 'axios'
 
 import history from '../../redux/history'
 
 const Product = (props) => {
+  const { t, i18n } = useTranslation()
+  const [translation, setTranslation] = useState(t('profile', { returnObjects: true }))
   const { product, className = '', ownProducts, setOwnProducts } = props
   const user = useSelector((s) => s.user.user)
   const baseUrl = window.location.origin
   const imageUrl = product.imageId
     ? `${baseUrl}/api/v1/images/${product.imageId}`
     : product.imageUrl
+
+  useEffect(() => {
+    setTranslation(t('profile', { returnObjects: true }))
+  }, [t, i18n.language])
 
   function handleDeleteProduct() {
     async function deleteProduct() {
@@ -52,7 +59,7 @@ const Product = (props) => {
       </div>
       <div className="flex justify-center items-center">
         <button type="button" onClick={handleDeleteProduct} className="btn">
-          Delete
+          {translation.delete}
         </button>
       </div>
     </div>

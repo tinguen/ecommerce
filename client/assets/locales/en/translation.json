@@ -1,0 +1,103 @@
+{
+    "header": {
+        "title": "Shop",
+        "login": "Login",
+        "signUp": "Sign up",
+        "cart": "Cart",
+        "newProduct": "Add new product",
+        "logout": "logout",
+        "profile": "Profile"
+    },
+    "login": {
+        "username": "username",
+        "password": "password",
+        "rememberMe": "Remember me",
+        "signUp": "Sign up",
+        "title": "Login",
+        "btn": "Login"
+    },
+    "signUp": {
+        "title": "Sign up for an account",
+        "email": "Email",
+        "username": "Username",
+        "password": "Password",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "btn": "Sign up"
+    },
+    "profile": {
+        "general": "General",
+        "products": "Your products",
+        "username": "username",
+        "name": "Name",
+        "delete": "Delete",
+        "orders": "Orders",
+        "ordersMsg": "Your orders",
+        "ordersTab": {
+            "orderMsg": "Your order",
+            "name": "Name",
+            "address": "Address",
+            "cart": "Your cart",
+            "items": "Number of items",
+            "price": "price",
+            "overall": "Overall",
+            "total": "total"
+        }
+    },
+    "newProduct": {
+        "titleMsg": "Cretee a new product",
+        "title": "Title",
+        "category": "Category",
+        "price": "Price",
+        "description": "Description",
+        "add": "Add product"
+    },
+    "cart": {
+        "clear": "Clear",
+        "checkout": "Checkout",
+        "total": "Total"
+    },
+    "checkout": {
+        "checkout": "Checkout",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "address": "Address",
+        "order": "Order",
+        "err": "We are very sorry. Please clear the cart and make order again!"
+    },
+    "home": {
+        "category": "Category",
+        "sort": "Sort by",
+        "nameUp": "Name up",
+        "nameDown": "Name down",
+        "priceUp": "Price up",
+        "priceDown": "Price down",
+        "clear": "Clear",
+        "manual": "Manual",
+        "all": "All"
+    },
+    "product": {
+        "description": "Description",
+        "review": "Reviews",
+        "loginMsg": {
+            "please": "Please ",
+            "login": "login",
+            "rest": " to leave a review"
+        },
+        "wrote": "wrote",
+        "left": "left",
+        "reviews": {
+            "title": "Leave your thoughts:",
+            "description": "Description",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "btn": "Post"
+        }
+    },
+    "email": {
+        "verifyMsg": "Your email has been verified. You can now log in!",
+        "thankYouMsg": "Please, check your email for verification link. If you don`t see it, check your spam folder!",
+        "err": "Error occurred",
+        "loading": "Loading..."
+    }
+}
