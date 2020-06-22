@@ -45,7 +45,7 @@ const Product = (props) => {
       <div className="flex flex-wrap">
         <img
           alt="Product img"
-          src={imageUrl || 'images/noimage.png'}
+          src={imageUrl || '/images/noimage.png'}
           className="w-48 h-48 object-cover m-2"
         />
         <div className="m-2">

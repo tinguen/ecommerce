@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
@@ -18,6 +18,7 @@ const Profile = (props) => {
   const [openTab, setOpenTab] = useState(1)
   const user = useSelector((s) => s.user.user)
   const baseUrl = window.location.origin
+  const once = useRef(false)
 
   useEffect(() => {
     setTranslation(t('profile', { returnObjects: true }))
@@ -46,6 +47,23 @@ const Profile = (props) => {
         history.push('/')
       }
     }
+    // async function fetchOwnProducts() {
+    //   if (!user.id) return
+    //   try {
+    //     const { data } = await axios.get(`${baseUrl}/api/v1/products/user/`, {
+    //       headers: { Authorization: `Bearer ${user.token}` }
+    //     })
+    //     setOwnProducts(data.map((p) => addCurrentPrice(p)))
+    //   } catch (er) {
+    //     history.push('/')
+    //   }
+    // }
+    fetchProducts()
+    fetchOrders()
+    // fetchOwnProducts()
+  }, [baseUrl, user.id, user.token])
+
+  useEffect(() => {
     async function fetchOwnProducts() {
       if (!user.id) return
       try {
@@ -57,10 +75,11 @@ const Profile = (props) => {
         history.push('/')
       }
     }
-    fetchProducts()
-    fetchOrders()
-    fetchOwnProducts()
-  }, [baseUrl, user.id, user.token])
+    if (!once.current && openTab === 3) {
+      once.current = true
+      fetchOwnProducts()
+    }
+  }, [baseUrl, openTab, user.id, user.token])
 
   return (
     <div>
@@ -101,11 +120,7 @@ const Profile = (props) => {
             {translation.orders}
           </a>
         </li>
-        <li
-          className={`-mb-px mr-2 last:mr-0 flex-auto text-center ${
-            ownProducts.length ? 'block' : 'hidden'
-          }`}
-        >
+        <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
           <a
             className={`text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal ${
               openTab === 3 ? `text-white bg-gray-900` : `text-gray-600 bg-white`
@@ -148,7 +163,7 @@ const Profile = (props) => {
         </div>
         <div
           className={`flex flex-col flex-wrap justify-between ${
-            openTab === 3 && ownProducts.length ? 'block' : 'hidden'
+            openTab === 3 ? 'block' : 'hidden'
           }`}
         >
           <Link to="/create">

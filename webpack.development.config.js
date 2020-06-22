@@ -185,7 +185,6 @@ const config = {
           { from: `${__dirname}/client/assets/fonts`, to: 'fonts' },
 
           { from: `${__dirname}/client/assets/sitemap.xml`, to: 'sitemap.xml' },
-          { from: `${__dirname}/client/assets/manifest.json`, to: 'manifest.json' },
           { from: `${__dirname}/client/index.html`, to: 'index.html' },
 
           { from: `${__dirname}/client/assets/locales`, to: 'locales' },

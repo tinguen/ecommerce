@@ -18,17 +18,23 @@ import Verify from './verify/verify'
 import Product from './product/product'
 import { getCurrentUser, fetchState } from '../redux/reducers/users'
 import { fetchOnLoad, setLimit } from '../redux/reducers/products'
-// import wave from '../assets/images/wave.jpg'
+import { history } from '../redux'
 
 const Home = () => {
   const [, i18n] = useTranslation()
-  // console.log(i18n.language)
   const dispatch = useDispatch()
   const isLogged = useSelector((s) => s.user.isLogged)
   const { language: lng } = useParams()
-  // const baseUrl = window.location.origin
-  // console.log(user)
-  // const user = useSelector((s) => s.user.user)
+  const languages = 'en|ru|uk'
+
+  useEffect(() => {
+    const lngs = languages.split('|')
+    if (!lngs.includes(i18n.language)) {
+      i18n.changeLanguage('en')
+      history.push('/en')
+    }
+  }, [i18n])
+
   useEffect(() => {
     let limit = 10
     const width = window.innerWidth
@@ -40,11 +46,8 @@ const Home = () => {
   }, [dispatch])
 
   useEffect(() => {
-    console.log(lng)
     i18n.changeLanguage(lng)
   }, [i18n, lng])
-
-  const languages = 'en|ru|uk'
 
   return (
     <div className="bg-gray-200 min-h-screen">

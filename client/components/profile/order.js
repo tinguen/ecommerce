@@ -34,15 +34,14 @@ const Order = (props) => {
       {order.cart.map((pr) => {
         if (!products.length) return <div key={pr.productId} />
         const product = products.filter((p) => p.id === pr.productId)[0]
+        const imageUrl = product.imageId
+          ? `${baseUrl}/api/v1/images/${product.imageId}`
+          : product.imageUrl
         return (
           <div key={pr.productId} className="flex flex-wrap">
             <img
               alt="Product img"
-              src={
-                product.imageId
-                  ? `${baseUrl}/api/v1/images/${product.imageId}`
-                  : 'images/noimage.png'
-              }
+              src={imageUrl || '/images/noimage.png'}
               className="w-48 h-48 m-2"
             />
             <div className="m-2">

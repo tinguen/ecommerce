@@ -198,7 +198,6 @@ const config = {
           { from: 'assets/locales', to: 'locales' },
 
           { from: 'assets/sitemap.xml', to: 'sitemap.xml' },
-          { from: 'assets/manifest.json', to: 'manifest.json' },
           {
             from: 'install-sw.js',
             to: 'js/install-sw.js',
