@@ -106,7 +106,7 @@
     "i18next-browser-languagedetector": "^5.0.0",
     "i18next-http-backend": "^1.0.15",
     "image-webpack-loader": "^6.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.9.16",
     "multer": "^1.4.2",
     "multer-gridfs-storage": "^4.1.0",
